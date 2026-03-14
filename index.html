@@ -9,415 +9,140 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
 <style>
 
-/* ─── RESET ─────────────────────────────────────────────── */
+/* ── RESET ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-html {
-  scroll-behavior: smooth;
-  background: #2a2018;
-  /* FIX: remove -webkit-overflow-scrolling which can cause crashes on some setups */
-}
+html { scroll-behavior:smooth; background:#2a2018; }
 body {
-  width: 100%;
-  min-height: 100vh;
-  background: #2a2018;
-  font-family: 'Inter', sans-serif;
-  /* FIX: prevent overscroll bounce causing visual lag */
-  overscroll-behavior: none;
+  width:100%; min-height:100vh;
+  background:#2a2018;
+  font-family:'Inter',sans-serif;
+  overscroll-behavior:none;
 }
 
-/* ─── BACKGROUND PHOTO ──────────────────────────────────── */
-/* FIX: will-change only on transform, not filter — reduces GPU overdraw/lag */
+/* ── BACKGROUND ── */
 .bg {
-  position: fixed;
-  inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: 50% 20%;
-  filter: brightness(0.78) blur(22px);
-  transform: scale(1.07);
-  z-index: 0;
-  display: block;
-  will-change: transform;
-  /* FIX: promote to own compositor layer cleanly */
-  backface-visibility: hidden;
+  position:fixed; inset:0;
+  width:100%; height:100%;
+  object-fit:cover; object-position:50% 20%;
+  filter:brightness(0.78) blur(22px);
+  transform:scale(1.07);
+  z-index:0; display:block;
+  will-change:transform;
+  backface-visibility:hidden;
 }
-.bg.loaded {
-  animation: unblur 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-/* FIX: only animate what's needed — no opacity flicker */
+.bg.loaded { animation:unblur 1.4s cubic-bezier(0.22,1,0.36,1) forwards; }
 @keyframes unblur {
-  from { filter: brightness(0.78) blur(22px); transform: scale(1.07); }
-  to   { filter: brightness(0.78) blur(0px);  transform: scale(1);    }
+  from { filter:brightness(0.78) blur(22px); transform:scale(1.07); }
+  to   { filter:brightness(0.78) blur(0px);  transform:scale(1);    }
 }
+@media (min-width:768px)  { .bg { object-position:50% 25%; } }
+@media (min-width:1024px) { .bg { object-position:50% 30%; } }
+@media (min-width:1440px) { .bg { object-position:50% 35%; } }
 
-@media (min-width: 768px)  { .bg { object-position: 50% 25%; } }
-@media (min-width: 1024px) { .bg { object-position: 50% 30%; } }
-@media (min-width: 1440px) { .bg { object-position: 50% 35%; } }
-
-/* ─── RESPONSIVE BREAKPOINTS ────────────────────────────────────────────────
-
-   Tier 1 — Small mobile  : max-width 360px  (iPhone SE, Galaxy A series)
-   Tier 2 — Mobile        : max-width 480px  (most iPhones, Pixels)
-   Tier 3 — Large mobile  : max-width 600px  (iPhone Plus/Max, large Android)
-   Tier 4 — Tablet port.  : max-width 768px  (iPad mini portrait, small tablets)
-   Tier 5 — Tablet land.  : max-width 1024px (iPad, Android tablets landscape)
-   Tier 6 — Laptop        : min-width 1280px (MacBook Air, 13" laptops)
-   Tier 7 — Large desktop : min-width 1600px (27" monitors, QHD displays)
-
-────────────────────────────────────────────────────────────────────────── */
-
-/* ── Tier 7: Large desktop (1600px+) ── */
-@media (min-width: 1600px) {
-  .content { padding: 60px 64px; }
-  .name { font-size: 200px; }
-  #announcementBtn { top: 60px; right: 60px; font-size: 11px; padding: 12px 22px; }
-  .tagline-section { bottom: 200px; }
-  #musicFixed { bottom: 60px; }
-  .copyright-fixed { bottom: 36px; }
-}
-
-/* ── Tier 6: Standard laptop (1280–1599px) — already well handled by clamp, no overrides needed ── */
-
-/* ── Tier 5: Tablet landscape (769px–1024px) ── */
-@media (max-width: 1024px) and (min-width: 769px) {
-  .name { font-size: clamp(80px, 14vw, 130px); }
-  .tagline-section { bottom: 175px; width: 80vw; }
-  .tagline-text { font-size: 13.5px; }
-  #musicFixed { bottom: 50px; }
-  .copyright-fixed { bottom: 22px; }
-}
-
-/* ── Tier 4: Tablet portrait (601px–768px) ── */
-@media (max-width: 768px) {
-  .name { font-size: clamp(68px, 16vw, 110px); }
-  .content { padding: 32px 28px; }
-  .socials { gap: 18px; margin-left: 8px; }
-  .socials svg { width: 22px; height: 22px; }
-  .bio { max-width: 100%; font-size: 12px; }
-
-  .tagline-section { bottom: 168px; width: 88vw; gap: 12px; }
-  .tagline-text { font-size: 13px; line-height: 1.8; }
-  .tagline-line { width: 32px; }
-
-  #announcementBtn {
-    top: 28px;
-    right: 20px;
-    font-size: 9.5px;
-    padding: 8px 14px;
-    gap: 7px;
-  }
-
-  #musicFixed { bottom: 46px; }
-  #pillSong { max-width: 130px; }
-  .copyright-fixed { bottom: 20px; }
-
-  #modalCard { padding: 28px 24px; border-radius: 20px; }
-  #modalTitle { font-size: 22px; }
-}
-
-/* ── Tier 3: Large mobile (481px–600px) ── */
-@media (max-width: 600px) {
-  .name { font-size: clamp(62px, 17vw, 90px); }
-  .content { padding: 28px 22px; }
-
-  .tagline-section { bottom: 162px; width: 90vw; gap: 10px; }
-  .tagline-text { font-size: 12.5px; line-height: 1.75; }
-
-  #announcementBtn {
-    top: 24px;
-    right: 16px;
-    font-size: 9px;
-    padding: 7px 12px;
-    gap: 6px;
-  }
-
-  #musicFixed { bottom: 44px; }
-  #pillSong { max-width: 120px; }
-  #pillSong span { font-size: 11.5px; }
-  #pillLabel { font-size: 9px; }
-
-  .copyright-fixed { bottom: 18px; }
-
-  .ticker-item { font-size: 8.5px; padding-right: 50px; }
-  .ticker-dot  { padding-right: 50px; font-size: 8.5px; }
-}
-
-/* ── Tier 2: Mobile (361px–480px) ── */
-@media (max-width: 480px) {
-  .name { font-size: clamp(58px, 17.5vw, 78px); }
-  .content { padding: 24px 18px; min-height: 100svh; }
-
-  .top { gap: 10px; }
-  .socials { gap: 14px; margin-left: 6px; }
-  .socials svg { width: 20px; height: 20px; }
-  .bio { max-width: 100%; font-size: 11.5px; }
-
-  .tagline-section {
-    bottom: 156px;
-    width: 92vw;
-    gap: 9px;
-  }
-  .tagline-text { font-size: 12px; line-height: 1.72; }
-  .tagline-line { width: 26px; }
-
-  #announcementBtn {
-    top: 20px;
-    right: 14px;
-    font-size: 8.5px;
-    padding: 7px 11px;
-    gap: 5px;
-    letter-spacing: 0.05em;
-  }
-  #announcementBtn .btn-dot { width: 5px; height: 5px; }
-
-  #musicFixed { bottom: 42px; }
-  #musicPill { gap: 11px; padding: 9px 14px 9px 11px; }
-  #innerBtn { width: 32px; height: 32px; }
-  #innerBtn svg { width: 13px; height: 13px; }
-  #pillSong { max-width: 110px; font-size: 11px; }
-  #pillLabel { font-size: 8.5px; }
-  #barsIcon { height: 15px; }
-
-  .copyright-fixed { bottom: 16px; }
-
-  .ticker-item { font-size: 8px; padding-right: 40px; }
-  .ticker-dot  { padding-right: 40px; font-size: 8px; }
-  .ticker-wrap { height: 20px; }
-
-  #modalCard { padding: 24px 18px; border-radius: 18px; max-width: 100%; margin: 0 8px; }
-  #modalTitle { font-size: 20px; margin-bottom: 16px; }
-  #modalBody { font-size: 13px; line-height: 1.75; max-height: 48vh; }
-  #modalTag { font-size: 8.5px; }
-  #modalDate { font-size: 9.5px; }
-  #modalClose { width: 28px; height: 28px; font-size: 12px; top: 12px; right: 12px; }
-}
-
-/* ── Tier 1: Small mobile (≤360px) — Galaxy A13, iPhone SE 1st gen ── */
-@media (max-width: 360px) {
-  .name { font-size: 54px; }
-  .content { padding: 20px 16px; }
-
-  .socials { gap: 12px; margin-left: 4px; }
-  .socials svg { width: 18px; height: 18px; }
-
-  #announcementBtn {
-    top: 16px;
-    right: 12px;
-    font-size: 8px;
-    padding: 6px 10px;
-    gap: 5px;
-  }
-  #announcementBtn .btn-label { display: none; }
-
-  .tagline-section { bottom: 150px; width: 94vw; }
-  .tagline-text { font-size: 11px; line-height: 1.68; }
-  .tagline-line { width: 22px; }
-
-  #musicFixed { bottom: 38px; }
-  #musicPill { gap: 10px; padding: 8px 12px 8px 10px; }
-  #innerBtn { width: 30px; height: 30px; }
-  #pillSong { max-width: 96px; font-size: 10.5px; }
-  #pillLabel { font-size: 8px; }
-  #barsIcon div { width: 2.5px; }
-
-  #modalCard { padding: 20px 16px; }
-  #modalTitle { font-size: 18px; }
-  #modalBody { font-size: 12.5px; max-height: 44vh; }
-}
-
-/* ── Safe-area insets for iPhone notch / Dynamic Island / home bar ── */
-@supports (padding: max(0px)) {
-  .content {
-    padding-left: max(clamp(18px,5vw,52px), env(safe-area-inset-left));
-    padding-right: max(clamp(18px,5vw,52px), env(safe-area-inset-right));
-    padding-top: max(clamp(24px,5vw,52px), env(safe-area-inset-top));
-  }
-  #announcementBtn {
-    top: max(clamp(20px,5vw,52px), env(safe-area-inset-top));
-    right: max(clamp(12px,3vw,40px), env(safe-area-inset-right));
-  }
-  .copyright-fixed {
-    bottom: max(16px, env(safe-area-inset-bottom));
-  }
-  #musicFixed {
-    bottom: max(42px, calc(env(safe-area-inset-bottom) + 28px));
-  }
-  .tagline-section {
-    bottom: max(156px, calc(env(safe-area-inset-bottom) + 130px));
-  }
-  .ticker-wrap {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-}
-
-/* ── Use 100svh on modern mobile browsers (avoids address-bar collapse glitch) ── */
-@supports (height: 100svh) {
-  .content { min-height: 100svh; }
-  #musicFixed { bottom: max(42px, calc(env(safe-area-inset-bottom, 0px) + 28px)); }
-}
-
-/* ─── GRAIN ─────────────────────────────────────────────── */
-/* FIX: reduce animation steps — was too fast causing jank */
+/* ── GRAIN ── */
 .grain {
-  position: fixed;
-  inset: -100px;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.055;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: gr 0.7s steps(2) infinite;
-  mix-blend-mode: overlay;
-  will-change: transform;
+  position:fixed; inset:-100px; z-index:1;
+  pointer-events:none; opacity:0.055;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:gr 0.7s steps(2) infinite;
+  mix-blend-mode:overlay; will-change:transform;
 }
 @keyframes gr {
   0%   { transform:translate(0,0); }
   50%  { transform:translate(-2%,-2%); }
-  100% { transform:translate(2%, 2%); }
+  100% { transform:translate(2%,2%); }
 }
 
-/* ─── OVERLAY ───────────────────────────────────────────── */
+/* ── OVERLAY ── */
 .overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  background:
-    linear-gradient(to bottom,
-      rgba(0,0,0,0.18) 0%,
-      transparent 30%,
-      transparent 50%,
-      rgba(0,0,0,0.65) 100%
-    );
-  pointer-events: none;
+  position:fixed; inset:0; z-index:2; pointer-events:none;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.18) 0%,transparent 30%,transparent 50%,rgba(0,0,0,0.65) 100%);
 }
 
-/* ─── CONTENT ───────────────────────────────────────────── */
+/* ── CONTENT ── */
 .content {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
-  padding: clamp(28px,5vw,52px) clamp(24px,5vw,52px);
-  /* FIX: slight delay so bg unblur can start first, feels intentional */
-  animation: fadeIn 0.8s ease 0.5s both;
+  position:relative; z-index:3;
+  display:flex; flex-direction:column; justify-content:space-between;
+  min-height:100vh; min-height:100svh;
+  padding:clamp(28px,5vw,52px) clamp(24px,5vw,52px);
+  animation:fadeIn 0.8s ease 0.5s both;
 }
 @keyframes fadeIn {
   from { opacity:0; transform:translateY(12px); }
   to   { opacity:1; transform:translateY(0); }
 }
 
-/* ─── TOP BLOCK ─────────────────────────────────────────── */
-.top {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(8px,1.5vw,16px);
-}
+/* ── TOP ── */
+.top { display:flex; flex-direction:column; gap:clamp(8px,1.5vw,16px); }
 
-/* ─── NAME ──────────────────────────────────────────────── */
+/* ── NAME ── */
 .name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 800;
-  font-size: clamp(72px,18vw,180px);
-  line-height: 0.88;
-  letter-spacing: 0.01em;
-  color: #fff;
-  text-transform: uppercase;
-  display: inline-flex;
-  gap: 0.01em;
-  text-shadow: 0 2px 40px rgba(0,0,0,0.3);
+  font-family:'Barlow Condensed',sans-serif; font-weight:800;
+  font-size:clamp(72px,18vw,180px); line-height:0.88;
+  letter-spacing:0.01em; color:#fff; text-transform:uppercase;
+  display:inline-flex; gap:0.01em;
+  text-shadow:0 2px 40px rgba(0,0,0,0.3);
 }
-
-/* FIX: stagger starts later to not compete with bg unblur */
 @keyframes letterSlide {
-  0%   { opacity:0; transform: translateX(-36px); }
-  100% { opacity:1; transform: translateX(0); }
+  0%   { opacity:0; transform:translateX(-36px); }
+  100% { opacity:1; transform:translateX(0); }
 }
 .letter {
-  display: inline-block;
-  opacity: 0;
-  will-change: transform, opacity;
-  animation: letterSlide 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
-  /* FIX: delay starts at 0.6s (after bg+content fade), stagger 0.07s per letter */
-  animation-delay: calc(0.07s * var(--i) + 0.6s);
+  display:inline-block; opacity:0;
+  will-change:transform,opacity;
+  animation:letterSlide 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation-delay:calc(0.07s * var(--i) + 0.6s);
 }
 
-/* ─── BIO ───────────────────────────────────────────────── */
+/* ── BIO ── */
 .bio {
-  font-size: clamp(11px,1.2vw,13px);
-  font-weight: 300;
-  line-height: 1.75;
-  color: rgba(255,255,255,0.7);
-  max-width: clamp(240px,38vw,420px);
-  letter-spacing: 0.01em;
+  font-size:clamp(11px,1.2vw,13px); font-weight:300;
+  line-height:1.75; color:rgba(255,255,255,0.7);
+  max-width:clamp(240px,38vw,420px); letter-spacing:0.01em;
 }
 
-/* ─── SOCIALS ───────────────────────────────────────────── */
+/* ── SOCIALS ── */
 .socials {
-  display: flex;
-  align-items: center;
-  gap: clamp(16px,3vw,28px);
-  margin-top: clamp(4px,1vw,8px);
-  margin-left: 14px;
+  display:flex; align-items:center;
+  gap:clamp(16px,3vw,28px);
+  margin-top:clamp(4px,1vw,8px); margin-left:14px;
 }
 .socials a {
-  color: rgba(255,255,255,0.85);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  /* FIX: single transition property, not shorthand with multiple — cleaner */
-  transition: color 0.22s ease, transform 0.22s ease;
+  color:rgba(255,255,255,0.85); text-decoration:none;
+  display:flex; align-items:center;
+  transition:color 0.22s ease, transform 0.22s ease;
 }
 .socials a:hover { color:#fff; transform:scale(1.15); }
-.socials svg {
-  width: clamp(20px,3.2vw,26px);
-  height: clamp(20px,3.2vw,26px);
-  fill: currentColor;
-}
+.socials svg { width:clamp(20px,3.2vw,26px); height:clamp(20px,3.2vw,26px); fill:currentColor; }
 
-/* ─── ANNOUNCEMENT BUTTON ───────────────────────────────── */
+/* ── ANNOUNCEMENT BUTTON ── */
 #announcementBtn {
-  position: fixed;
-  top: clamp(28px,5vw,52px);
-  right: clamp(14px,3vw,40px);
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: clamp(7px,1.2vw,11px) clamp(12px,2vw,20px);
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 999px;
-  cursor: pointer;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  /* FIX: use Inter consistently — was declared but redundant; ensure it's there */
-  font-size: clamp(9px,1.1vw,11px);
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.12);
-  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  /* FIX: announcement button appears after all primary animations finish */
-  animation: fadeSlideDown 0.6s cubic-bezier(0.22,1,0.36,1) 2.2s both;
-  white-space: nowrap;
+  position:fixed;
+  top:clamp(28px,5vw,52px); right:clamp(14px,3vw,40px);
+  z-index:10000;
+  display:flex; align-items:center; gap:8px;
+  padding:clamp(7px,1.2vw,11px) clamp(12px,2vw,20px);
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px) saturate(160%);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.18); border-radius:999px;
+  cursor:pointer; color:#fff;
+  font-family:'Inter',sans-serif; font-size:clamp(9px,1.1vw,11px);
+  font-weight:600; letter-spacing:0.07em; text-transform:uppercase;
+  box-shadow:0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.12);
+  transition:background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  animation:fadeSlideDown 0.6s cubic-bezier(0.22,1,0.36,1) 2.2s both;
+  white-space:nowrap;
 }
 #announcementBtn:hover {
-  background: rgba(255,255,255,0.14);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.14); transform:translateY(-2px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.18);
 }
 #announcementBtn .btn-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 8px rgba(255,255,255,0.9);
-  animation: dotPulse 2.2s ease-in-out infinite;
-  flex-shrink: 0;
+  width:6px; height:6px; border-radius:50%;
+  background:#fff; box-shadow:0 0 8px rgba(255,255,255,0.9);
+  animation:dotPulse 2.2s ease-in-out infinite; flex-shrink:0;
 }
 @keyframes dotPulse {
   0%,100% { opacity:1; transform:scale(1); }
@@ -425,446 +150,288 @@ body {
 }
 @keyframes fadeSlideDown {
   0%   { opacity:0; transform:translateY(-16px) scale(0.96); filter:blur(2px); }
-  100% { opacity:1; transform:translateY(0) scale(1); filter:blur(0px); }
-}
-@media (max-width: 480px) {
-  #announcementBtn { padding: 7px 12px; font-size: 9px; gap: 6px; }
-  #announcementBtn .btn-dot { width: 5px; height: 5px; }
+  100% { opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
 }
 
-/* ─── ANNOUNCEMENT MODAL ────────────────────────────────── */
-/* FIX: use display:flex always, control visibility via opacity+pointer-events
-   so browser doesn't recalculate layout on open (removes janky reflow) */
+/* ── MODAL ── */
 #announcementModal {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  pointer-events: none;
-  opacity: 0;
-  /* FIX: transition on the modal wrapper itself for smooth backdrop */
-  transition: opacity 0.25s ease;
+  position:fixed; inset:0; z-index:99999;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+  pointer-events:none; opacity:0; visibility:hidden;
+  transition:opacity 0.25s ease, visibility 0.25s ease;
 }
 #announcementModal.open {
-  pointer-events: all;
-  opacity: 1;
+  pointer-events:all; opacity:1; visibility:visible;
 }
 #modalBackdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  cursor: pointer;
+  position:absolute; inset:0;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  cursor:pointer;
 }
 #modalCard {
-  position: relative;
-  z-index: 1;
-  background: rgba(22,18,12,0.65);
-  backdrop-filter: blur(32px) saturate(160%) brightness(1.05);
-  -webkit-backdrop-filter: blur(32px) saturate(160%) brightness(1.05);
-  border: 1px solid rgba(255,255,255,0.14);
-  border-radius: 24px;
-  padding: clamp(28px,5vw,48px);
-  max-width: 580px;
-  width: 100%;
-  box-shadow:
-    0 32px 80px rgba(0,0,0,0.4),
-    0 2px 0 rgba(255,255,255,0.06) inset,
-    inset 0 1px 0 rgba(255,255,255,0.14);
-  /* FIX: card animates in/out independently with scale — cleaner than JS-driven transform */
-  transform: scale(0.94) translateY(12px);
-  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
-  opacity: 0;
+  position:relative; z-index:1;
+  background:rgba(22,18,12,0.65);
+  backdrop-filter:blur(32px) saturate(160%) brightness(1.05);
+  -webkit-backdrop-filter:blur(32px) saturate(160%) brightness(1.05);
+  border:1px solid rgba(255,255,255,0.14); border-radius:24px;
+  padding:clamp(28px,5vw,48px); max-width:580px; width:100%;
+  box-shadow:0 32px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.14);
+  transform:scale(0.94) translateY(12px); opacity:0;
+  transition:transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
 }
-#announcementModal.open #modalCard {
-  transform: scale(1) translateY(0);
-  opacity: 1;
-}
+#announcementModal.open #modalCard { transform:scale(1) translateY(0); opacity:1; }
 #modalClose {
-  position: absolute;
-  top: 16px; right: 16px;
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.14);
-  color: rgba(255,255,255,0.7);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, transform 0.2s;
-  line-height: 1;
+  position:absolute; top:16px; right:16px;
+  width:32px; height:32px; border-radius:50%;
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
+  color:rgba(255,255,255,0.7); font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:background 0.2s, color 0.2s, transform 0.2s; line-height:1;
 }
-#modalClose:hover {
-  background: rgba(255,255,255,0.16);
-  color: #fff;
-  transform: scale(1.08) rotate(90deg);
-}
-#modalTag {
-  /* FIX: use Inter (premium, consistent with the page) */
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
-  margin-bottom: 10px;
-}
-#modalTitle {
-  /* FIX: "Latest Announcement" font was Barlow which looked clunky small-scale;
-     switched to Inter for modal title — premium feel, clear contrast with page name */
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(20px,3.5vw,28px);
-  font-weight: 700;
-  text-transform: none;
-  color: #fff;
-  letter-spacing: -0.01em;
-  margin-bottom: 20px;
-  line-height: 1.1;
-}
+#modalClose:hover { background:rgba(255,255,255,0.16); color:#fff; transform:scale(1.08) rotate(90deg); }
+#modalTag { font-family:'Inter',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:10px; }
+#modalTitle { font-family:'Inter',sans-serif; font-size:clamp(20px,3.5vw,28px); font-weight:700; color:#fff; letter-spacing:-0.01em; margin-bottom:20px; line-height:1.1; }
 #modalBody {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(13px,1.3vw,14.5px);
-  font-weight: 400;
-  line-height: 1.8;
-  color: rgba(255,255,255,0.72);
-  letter-spacing: 0.005em;
-  max-height: 50vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-right: 8px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.15) transparent;
+  font-family:'Inter',sans-serif; font-size:clamp(13px,1.3vw,14.5px);
+  font-weight:400; line-height:1.8; color:rgba(255,255,255,0.72); letter-spacing:0.005em;
+  max-height:50vh; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding-right:8px; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,0.15) transparent;
 }
-#modalBody::-webkit-scrollbar { width: 3px; }
-#modalBody::-webkit-scrollbar-track { background: transparent; }
-#modalBody::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 999px; }
-#modalBody p { margin-bottom: 16px; }
-#modalBody p:last-child { margin-bottom: 0; }
-.modal-divider {
-  width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.08);
-  margin: 16px 0;
-}
-#modalDate {
-  margin-top: 22px;
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
+#modalBody::-webkit-scrollbar { width:3px; }
+#modalBody::-webkit-scrollbar-track { background:transparent; }
+#modalBody::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:999px; }
+#modalBody p { margin-bottom:16px; }
+#modalBody p:last-child { margin-bottom:0; }
+.modal-divider { width:100%; height:1px; background:rgba(255,255,255,0.08); margin:16px 0; }
+#modalDate { margin-top:22px; font-family:'Inter',sans-serif; font-size:10px; font-weight:500; color:rgba(255,255,255,0.3); letter-spacing:0.08em; text-transform:uppercase; }
 
-/* ─── TAGLINE ────────────────────────────────────────────── */
+/* ── TAGLINE ── */
 .tagline-section {
-  position: fixed;
-  bottom: 180px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 14px;
-  width: clamp(300px, 86vw, 680px);
-  pointer-events: none;
+  position:fixed; bottom:180px; left:50%; transform:translateX(-50%);
+  z-index:4; display:flex; flex-direction:column; align-items:center;
+  text-align:center; gap:14px; width:clamp(300px,86vw,680px); pointer-events:none;
 }
-.tagline-line {
-  width: 40px; height: 1px;
-  background: rgba(255,255,255,0.3);
-  margin: 0 auto;
-}
+.tagline-line { width:40px; height:1px; background:rgba(255,255,255,0.3); margin:0 auto; }
 .tagline-text {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(12px,1.1vw,15px);
-  font-weight: 300;
-  line-height: 1.85;
-  color: rgba(255,255,255,0.82);
-  letter-spacing: 0.025em;
-  max-width: 600px;
-  font-style: italic;
-  width: 100%;
-  text-shadow:
-    0 0 20px rgba(0,0,0,0.95),
-    0 0 40px rgba(0,0,0,0.8),
-    0 2px 8px rgba(0,0,0,0.9);
+  font-family:'Inter',sans-serif; font-size:clamp(12px,1.1vw,15px);
+  font-weight:300; line-height:1.85; color:rgba(255,255,255,0.82);
+  letter-spacing:0.025em; max-width:600px; font-style:italic; width:100%;
+  text-shadow:0 0 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.9);
 }
-
 @keyframes wordFadeUp {
-  0%   { opacity:0; transform: translateY(8px); }
-  100% { opacity:1; transform: translateY(0); }
+  0%   { opacity:0; transform:translateY(8px); }
+  100% { opacity:1; transform:translateY(0); }
 }
-.tagline-word {
-  display: inline-block;
-  opacity: 0;
-  margin-right: 0.28em;
-  will-change: transform, opacity;
-}
-.tagline-word.visible {
-  animation: wordFadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-@keyframes lineExpand {
-  from { width: 0; opacity: 0; }
-  to   { width: 40px; opacity: 1; }
-}
-#taglineLine { width: 0; opacity: 0; }
-#taglineLine.visible { animation: lineExpand 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+.tagline-word { display:inline-block; opacity:0; margin-right:0.28em; will-change:transform,opacity; }
+.tagline-word.visible { animation:wordFadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
+@keyframes lineExpand { from { width:0; opacity:0; } to { width:40px; opacity:1; } }
+#taglineLine { width:0; opacity:0; }
+#taglineLine.visible { animation:lineExpand 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
 
-@media (max-width: 768px) {
-  .tagline-section { bottom: 168px; width: 88vw; }
-  .tagline-text { font-size: 12.5px; line-height: 1.8; }
-}
-@media (max-width: 480px) {
-  .tagline-section { bottom: 158px; width: 90vw; gap: 10px; }
-  .tagline-text { font-size: 12px; line-height: 1.75; }
-  .tagline-line { width: 28px; }
-  .socials { gap: 14px; }
-  .bio { max-width: 100%; }
-}
-
-/* ─── COPYRIGHT ─────────────────────────────────────────── */
+/* ── COPYRIGHT ── */
 .copyright-fixed {
-  position: fixed;
-  bottom: clamp(16px,3vw,32px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  pointer-events: none;
-  white-space: nowrap;
-  width: max-content;
-  max-width: 96vw;
+  position:fixed; bottom:clamp(16px,3vw,32px); left:50%; transform:translateX(-50%);
+  z-index:100; pointer-events:none;
+  white-space:nowrap; width:max-content; max-width:96vw;
 }
 .copyright {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(7.5px, 2vw, 12px);
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  white-space: nowrap;
-  display: inline-block;
+  font-family:'Inter',sans-serif; font-size:clamp(7.5px,2vw,12px);
+  font-weight:400; letter-spacing:0.05em; text-transform:uppercase;
+  color:rgba(255,255,255,0.5); white-space:nowrap; display:inline-block;
 }
 
-/* ─── TICKER ─────────────────────────────────────────────── */
+/* ── TICKER ── */
 .ticker-wrap {
-  position: fixed;
-  bottom: 0;
-  left: 0; right: 0;
-  height: 22px;
-  overflow: hidden;
-  z-index: 9998;
-  pointer-events: none;
+  position:fixed; bottom:0; left:0; right:0;
+  height:22px; overflow:hidden; z-index:9998; pointer-events:none;
 }
-.ticker-track {
-  display: flex;
-  white-space: nowrap;
-  animation: ticker-scroll 42s linear infinite;
-  will-change: transform;
-}
-/* FIX: pause ticker while tab is hidden — saves GPU */
-@media (prefers-reduced-motion: reduce) {
-  .ticker-track { animation: none; }
-  .grain { animation: none; }
-}
-.ticker-item {
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.09em;
-  color: rgba(255,255,255,0.55);
-  text-shadow: 0 0 12px rgba(255,255,255,0.2);
-  padding: 4px 0;
-  flex-shrink: 0;
-  padding-right: 80px;
-}
-.ticker-dot {
-  color: rgba(255,255,255,0.3);
-  padding-right: 80px;
-  font-size: 9px;
-}
-@keyframes ticker-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
+.ticker-track { display:flex; white-space:nowrap; animation:ticker-scroll 42s linear infinite; will-change:transform; }
+.ticker-item { font-family:'Inter',sans-serif; font-size:9px; font-weight:400; letter-spacing:0.09em; color:rgba(255,255,255,0.55); text-shadow:0 0 12px rgba(255,255,255,0.2); padding:4px 0; flex-shrink:0; padding-right:80px; }
+.ticker-dot { color:rgba(255,255,255,0.3); padding-right:80px; font-size:9px; }
+@keyframes ticker-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
 
-/* ─── MUSIC WIDGET ──────────────────────────────────────── */
+/* ── MUSIC ── */
 @keyframes barA { 0%,100%{height:28%} 50%{height:100%} }
-@keyframes barB { 0%,100%{height:88%} 50%{height:18%} }
+@keyframes barB { 0%,100%{height:88%} 50%{height:18%}  }
 @keyframes barC { 0%,100%{height:55%} 50%{height:100%} }
-
 @keyframes liquidPulse {
-  0%   { box-shadow: 0 0 0 0 rgba(255,255,255,0.15), inset 0 1px 0 rgba(255,255,255,0.3); }
-  60%  { box-shadow: 0 0 0 10px rgba(255,255,255,0), inset 0 1px 0 rgba(255,255,255,0.3); }
-  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0), inset 0 1px 0 rgba(255,255,255,0.3); }
+  0%   { box-shadow:0 0 0 0 rgba(255,255,255,0.15), inset 0 1px 0 rgba(255,255,255,0.3); }
+  60%  { box-shadow:0 0 0 10px rgba(255,255,255,0), inset 0 1px 0 rgba(255,255,255,0.3); }
+  100% { box-shadow:0 0 0 0 rgba(255,255,255,0), inset 0 1px 0 rgba(255,255,255,0.3); }
 }
 @keyframes fadeSlideIn {
   0%   { opacity:0; transform:translateX(-50%) translateY(16px) scale(0.96); filter:blur(2px); }
-  100% { opacity:1; transform:translateX(-50%) translateY(0) scale(1); filter:blur(0px); }
+  100% { opacity:1; transform:translateX(-50%) translateY(0) scale(1); filter:blur(0); }
 }
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
+@keyframes shimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
 
 #musicFixed {
-  position: fixed;
-  bottom: 52px;
-  left: 50%;
-  /* FIX: was using transform:translateX(-50%) on the wrapper but then JS/pill
-     also had transforms — caused drift. Keep wrapper just as anchor. */
-  transform: translateX(-50%);
-  z-index: 10000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Inter', sans-serif;
-  pointer-events: none;
-  /* FIX: delay music pill entry so it doesn't conflict with name + announcement */
-  animation: fadeSlideIn 0.6s cubic-bezier(0.22,1,0.36,1) 2.6s both;
-  /* FIX: ensure pill is hidden before animation */
-  opacity: 0;
+  position:fixed; bottom:52px; left:50%; transform:translateX(-50%);
+  z-index:10000; display:flex; flex-direction:column; align-items:center; gap:10px;
+  font-family:'Inter',sans-serif; pointer-events:none;
+  animation:fadeSlideIn 0.6s cubic-bezier(0.22,1,0.36,1) 2.6s both; opacity:0;
 }
-
 #musicPill {
-  pointer-events: all;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 18px 10px 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.07);
-  backdrop-filter: blur(22px) saturate(160%);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  border: 1px solid rgba(255,255,255,0.16);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.45),
-    inset 0 -1px 0 rgba(255,255,255,0.04),
-    0 8px 32px rgba(0,0,0,0.28),
-    0 2px 8px rgba(0,0,0,0.14);
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  /* FIX: no animation here — parent #musicFixed handles entry */
+  pointer-events:all; display:flex; align-items:center;
+  gap:14px; padding:10px 18px 10px 14px; border-radius:999px;
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(22px) saturate(160%); -webkit-backdrop-filter:blur(22px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.45), 0 8px 32px rgba(0,0,0,0.28);
+  cursor:pointer; transition:background 0.3s ease, transform 0.2s ease;
+  position:relative; overflow:hidden;
 }
 #musicPill::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%; right: -100%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
-  background-size: 200% auto;
-  animation: shimmer 3.5s linear infinite;
+  content:''; position:absolute; top:0; left:-100%; right:-100%; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent);
+  background-size:200% auto; animation:shimmer 3.5s linear infinite;
 }
-#musicPill:hover {
-  background: rgba(255,255,255,0.12);
-  transform: translateY(-2px);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.45),
-    0 12px 40px rgba(0,0,0,0.3);
-}
-#musicPill.playing {
-  animation: liquidPulse 2.2s ease-out infinite;
-}
+#musicPill:hover { background:rgba(255,255,255,0.12); transform:translateY(-2px); }
+#musicPill.playing { animation:liquidPulse 2.2s ease-out infinite; }
 
 #innerBtn {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.22);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 8px rgba(255,255,255,0.04);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: background 0.2s ease;
+  width:36px; height:36px; border-radius:50%;
+  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.22);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.45);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; transition:background 0.2s ease;
 }
-#musicPill:hover #innerBtn { background: rgba(255,255,255,0.2); }
+#musicPill:hover #innerBtn { background:rgba(255,255,255,0.2); }
 
-#pillText {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-#pillLabel {
-  font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.42);
-  line-height: 1;
-}
-#pillSong {
-  font-size: 12px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.9);
-  letter-spacing: 0.01em;
-  line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 145px;
-}
-#pillSong span {
-  display: inline-block;
-  padding-left: 100%;
-  animation: marquee 18s linear infinite;
-  animation-delay: 2.5s;
-}
-@keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
+#playIcon { display:block; width:15px; height:15px; fill:white; margin-left:2px; flex-shrink:0; }
+#barsIcon { display:none; align-items:flex-end; gap:2.5px; height:18px; }
+#barsIcon div { width:3px; background:rgba(255,255,255,0.9); border-radius:2px; }
 
-/* Play/pause icons — use visibility + opacity instead of display:none
-   so layout doesn't shift and icons never flash invisible */
-#playIcon {
-  display: block;
-  width: 15px; height: 15px;
-  fill: white;
-  margin-left: 2px;
-  flex-shrink: 0;
-  transition: opacity 0.15s ease;
-  opacity: 1;
+#pillText { display:flex; flex-direction:column; gap:3px; }
+#pillLabel { font-size:9.5px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.42); line-height:1; }
+#pillSong { font-size:12px; font-weight:700; color:rgba(255,255,255,0.9); letter-spacing:0.01em; line-height:1.3; white-space:nowrap; overflow:hidden; max-width:145px; }
+#pillSong span { display:inline-block; padding-left:100%; animation:marquee 18s linear infinite; animation-delay:2.5s; }
+@keyframes marquee { 0% { transform:translateX(0); } 100% { transform:translateX(-100%); } }
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion:reduce) { .ticker-track, .grain { animation:none; } }
+
+/* ─── RESPONSIVE ─── */
+@media (min-width:1600px) {
+  .content { padding:60px 64px; }
+  .name { font-size:200px; }
+  #announcementBtn { top:60px; right:60px; font-size:11px; padding:12px 22px; }
+  .tagline-section { bottom:200px; }
+  #musicFixed { bottom:60px; }
+  .copyright-fixed { bottom:36px; }
 }
-#barsIcon {
-  display: none;
-  align-items: flex-end;
-  gap: 2.5px;
-  height: 18px;
-  opacity: 1;
-  transition: opacity 0.15s ease;
+@media (max-width:1024px) and (min-width:769px) {
+  .name { font-size:clamp(80px,14vw,130px); }
+  .tagline-section { bottom:175px; width:80vw; }
+  .tagline-text { font-size:13.5px; }
+  #musicFixed { bottom:50px; }
+  .copyright-fixed { bottom:22px; }
 }
-#barsIcon div {
-  width: 3px;
-  background: rgba(255,255,255,0.9);
-  border-radius: 2px;
+@media (max-width:768px) {
+  .name { font-size:clamp(68px,16vw,110px); }
+  .content { padding:32px 28px; }
+  .socials { gap:18px; margin-left:8px; }
+  .socials svg { width:22px; height:22px; }
+  .bio { max-width:100%; font-size:12px; }
+  .tagline-section { bottom:168px; width:88vw; gap:12px; }
+  .tagline-text { font-size:13px; line-height:1.8; }
+  .tagline-line { width:32px; }
+  #announcementBtn { top:28px; right:20px; font-size:9.5px; padding:8px 14px; gap:7px; }
+  #musicFixed { bottom:46px; }
+  #pillSong { max-width:130px; }
+  .copyright-fixed { bottom:20px; }
+  #modalCard { padding:28px 24px; border-radius:20px; }
+  #modalTitle { font-size:22px; }
+}
+@media (max-width:600px) {
+  .name { font-size:clamp(62px,17vw,90px); }
+  .content { padding:28px 22px; }
+  .tagline-section { bottom:162px; width:90vw; gap:10px; }
+  .tagline-text { font-size:12.5px; line-height:1.75; }
+  #announcementBtn { top:24px; right:16px; font-size:9px; padding:7px 12px; gap:6px; }
+  #musicFixed { bottom:44px; }
+  #pillSong { max-width:120px; }
+  #pillSong span { font-size:11.5px; }
+  #pillLabel { font-size:9px; }
+  .copyright-fixed { bottom:18px; }
+  .ticker-item { font-size:8.5px; padding-right:50px; }
+  .ticker-dot  { padding-right:50px; font-size:8.5px; }
+}
+@media (max-width:480px) {
+  .name { font-size:clamp(58px,17.5vw,78px); }
+  .content { padding:24px 18px; }
+  .top { gap:10px; }
+  .socials { gap:14px; margin-left:6px; }
+  .socials svg { width:20px; height:20px; }
+  .bio { max-width:100%; font-size:11.5px; }
+  .tagline-section { bottom:156px; width:92vw; gap:9px; }
+  .tagline-text { font-size:12px; line-height:1.72; }
+  .tagline-line { width:26px; }
+  #announcementBtn { top:20px; right:14px; font-size:8.5px; padding:7px 11px; gap:5px; letter-spacing:0.05em; }
+  #announcementBtn .btn-dot { width:5px; height:5px; }
+  #musicFixed { bottom:42px; }
+  #musicPill { gap:11px; padding:9px 14px 9px 11px; }
+  #innerBtn { width:32px; height:32px; }
+  #pillSong { max-width:110px; font-size:11px; }
+  #pillLabel { font-size:8.5px; }
+  #barsIcon { height:15px; }
+  .copyright-fixed { bottom:16px; }
+  .ticker-item { font-size:8px; padding-right:40px; }
+  .ticker-dot  { padding-right:40px; font-size:8px; }
+  .ticker-wrap { height:20px; }
+  #modalCard { padding:24px 18px; border-radius:18px; max-width:100%; margin:0 8px; }
+  #modalTitle { font-size:20px; margin-bottom:16px; }
+  #modalBody { font-size:13px; line-height:1.75; max-height:48vh; }
+  #modalTag { font-size:8.5px; }
+  #modalDate { font-size:9.5px; }
+  #modalClose { width:28px; height:28px; font-size:12px; top:12px; right:12px; }
+}
+@media (max-width:360px) {
+  .name { font-size:54px; }
+  .content { padding:20px 16px; }
+  .socials { gap:12px; margin-left:4px; }
+  .socials svg { width:18px; height:18px; }
+  #announcementBtn { top:16px; right:12px; font-size:8px; padding:6px 10px; gap:5px; }
+  #announcementBtn .btn-label { display:none; }
+  .tagline-section { bottom:150px; width:94vw; }
+  .tagline-text { font-size:11px; line-height:1.68; }
+  .tagline-line { width:22px; }
+  #musicFixed { bottom:38px; }
+  #musicPill { gap:10px; padding:8px 12px 8px 10px; }
+  #innerBtn { width:30px; height:30px; }
+  #pillSong { max-width:96px; font-size:10.5px; }
+  #pillLabel { font-size:8px; }
+  #barsIcon div { width:2.5px; }
+  #modalCard { padding:20px 16px; }
+  #modalTitle { font-size:18px; }
+  #modalBody { font-size:12.5px; max-height:44vh; }
+}
+@supports (padding: max(0px)) {
+  .content {
+    padding-left:max(clamp(18px,5vw,52px), env(safe-area-inset-left));
+    padding-right:max(clamp(18px,5vw,52px), env(safe-area-inset-right));
+    padding-top:max(clamp(24px,5vw,52px), env(safe-area-inset-top));
+  }
+  #announcementBtn {
+    top:max(clamp(20px,5vw,52px), env(safe-area-inset-top));
+    right:max(clamp(12px,3vw,40px), env(safe-area-inset-right));
+  }
+  .copyright-fixed { bottom:max(16px, env(safe-area-inset-bottom)); }
+  #musicFixed { bottom:max(42px, calc(env(safe-area-inset-bottom) + 28px)); }
+  .tagline-section { bottom:max(156px, calc(env(safe-area-inset-bottom) + 130px)); }
+  .ticker-wrap { padding-bottom:env(safe-area-inset-bottom); }
 }
 
 </style>
 </head>
 <body>
 
-<!-- Wrapper: just height anchor, not min-height:130vh which caused scroll jank -->
 <div style="position:relative; height:100vh; overflow:hidden;">
-
-  <!-- Background photo -->
-  <img class="bg" src="images/chidu.jpg" alt="Chidu">
-
-  <!-- Grain overlay -->
+  <img class="bg" src="images/chidu.jpg" alt="Chidu" loading="eager">
   <div class="grain"></div>
-
-  <!-- Vignette overlay -->
   <div class="overlay"></div>
-
-  <!-- Main content -->
   <div class="content">
     <div class="top">
       <h1 class="name">
@@ -875,52 +442,38 @@ body {
         <span class="letter" style="--i:4">U</span>
       </h1>
       <div class="socials">
-
-        <!-- Instagram -->
         <a href="#" target="_blank" rel="noopener" title="Instagram">
           <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         </a>
-
-        <!-- Twitter / X -->
         <a href="https://x.com/expensiveblood9?s=21" target="_blank" rel="noopener" title="Twitter / X">
           <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
-
-        <!-- Facebook -->
         <a href="https://www.facebook.com/share/1GZkYVhV88/?mibextid=wwXIfr" target="_blank" rel="noopener" title="Facebook">
           <svg viewBox="0 0 24 24"><path d="M17 2h-3a5 5 0 0 0-5 5v3H6v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
         </a>
-
-        <!-- LinkedIn -->
         <a href="#" target="_blank" rel="noopener" title="LinkedIn">
           <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.881 3.87 6 2.5 6S.02 4.881.02 3.5C.02 2.12 1.13 1 2.5 1s2.48 1.12 2.48 2.5zM5 8H0v16h5V8zm7.982 0H8.014v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0V24H24V13.869c0-7.88-8.922-7.593-11.018-3.714V8z"/></svg>
         </a>
-
-        <!-- Email -->
-        <a href="/cdn-cgi/l/email-protection#761e131a1a1936151e1f12035815191b" target="_blank" title="Email">
+        <a href="mailto:chidu@example.com" title="Email">
           <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
         </a>
-
-        <!-- Music / Playlist -->
         <a href="https://music.apple.com/in/playlist/play-infinity/pl.u-EdAVkGeIDYA7JLK" target="_blank" rel="noopener" title="Playlist">
           <svg viewBox="0 0 24 24"><path d="M9 3v10.55A4 4 0 1 0 11 17V7h4V3H9z"/></svg>
         </a>
-
       </div>
     </div>
   </div>
-
-</div><!-- end wrapper -->
+</div>
 
 <!-- Copyright -->
 <div class="copyright-fixed">
-  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;·&nbsp; v1.9.5</span>
+  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;&middot;&nbsp; v1.9.6</span>
 </div>
 
 <!-- Ticker -->
 <div class="ticker-wrap">
   <div class="ticker-track">
-    <span class="ticker-item">This website's design is inspired by the official website of Formula 1 driver Lewis Hamilton and follows a simple, minimal style focused on content and user experience.</span><span class="ticker-dot">✦</span><span class="ticker-item">This website's design is inspired by the official website of Formula 1 driver Lewis Hamilton and follows a simple, minimal style focused on content and user experience.</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">This website's design is inspired by the official website of Formula 1 driver Lewis Hamilton and follows a simple, minimal style focused on content and user experience.</span><span class="ticker-item">This website's design is inspired by the official website of Formula 1 driver Lewis Hamilton and follows a simple, minimal style focused on content and user experience.</span>
   </div>
 </div>
 
@@ -933,9 +486,7 @@ body {
 <div id="musicFixed">
   <div id="musicPill" onclick="toggleMusic()">
     <div id="innerBtn">
-      <svg id="playIcon" viewBox="0 0 24 24">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
+      <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       <div id="barsIcon">
         <div style="animation:barA 0.65s ease-in-out infinite;"></div>
         <div style="animation:barB 0.65s ease-in-out infinite 0.1s;"></div>
@@ -945,7 +496,7 @@ body {
     </div>
     <div id="pillText">
       <div id="pillLabel">Turn on the vibe</div>
-      <div id="pillSong"><span>I give everything for you — CIO MAUNG</span></div>
+      <div id="pillSong"><span>I give everything for you &#8212; CIO MAUNG</span></div>
     </div>
   </div>
 </div>
@@ -957,20 +508,20 @@ body {
 </button>
 
 <!-- Announcement Modal -->
-<div id="announcementModal">
+<div id="announcementModal" role="dialog" aria-modal="true">
   <div id="modalBackdrop" onclick="closeAnnouncement()"></div>
   <div id="modalCard">
-    <button id="modalClose" onclick="closeAnnouncement()">✕</button>
-    <div id="modalTag">📢 Official</div>
+    <button id="modalClose" onclick="closeAnnouncement()">&#10005;</button>
+    <div id="modalTag">&#128226; Official</div>
     <div id="modalTitle">Official Announcement</div>
     <div id="modalBody">
       <p>This website was officially launched on March 9, 2026. The complete design and development were carried out by Chidu's Team. The interface, UI design, and UX experience were carefully planned to provide a clean, modern, and minimal digital environment for visitors. Every section has been structured with attention to detail to ensure smooth navigation, clarity, and a visually balanced layout.</p>
       <div class="modal-divider"></div>
-      <p>🚧&nbsp; This website is currently still a work in progress. New sections, features, and content are being carefully crafted and will be revealed soon. Stay tuned — something exciting is on its way.</p>
+      <p>&#128679;&nbsp; This website is currently still a work in progress. New sections, features, and content are being carefully crafted and will be revealed soon. Stay tuned &#8212; something exciting is on its way.</p>
       <div class="modal-divider"></div>
-      <p>📩&nbsp; For any queries or just to say hello — feel free to reach out directly via email. We'd love to hear from you.</p>
+      <p>&#128233;&nbsp; For any queries or just to say hello &#8212; feel free to reach out directly via email. We&#8217;d love to hear from you.</p>
     </div>
-    <div id="modalDate">— Team Chidu</div>
+    <div id="modalDate">&#8212; Team Chidu</div>
   </div>
 </div>
 
@@ -980,132 +531,106 @@ body {
   <p class="tagline-text" id="taglineText"></p>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ─── BG IMAGE UNBLUR ─────────────────────────────── */
-var bg = document.querySelector('.bg');
-function startBgAnim() {
-  requestAnimationFrame(function() {
+<script>
+(function() {
+
+  /* BG UNBLUR */
+  var bg = document.querySelector('.bg');
+  function startBgAnim() {
     requestAnimationFrame(function() {
-      bg.classList.add('loaded');
+      requestAnimationFrame(function() { bg.classList.add('loaded'); });
     });
-  });
-}
-if (bg.complete && bg.naturalWidth > 0) {
-  startBgAnim();
-} else {
-  bg.addEventListener('load', startBgAnim);
-  // FIX: fallback if image fails (broken src), don't freeze in blurred state
-  bg.addEventListener('error', function() {
-    bg.style.filter = 'brightness(0.5)';
-    bg.style.transform = 'scale(1)';
-  });
-}
+  }
+  if (bg.complete && bg.naturalWidth > 0) {
+    startBgAnim();
+  } else {
+    bg.addEventListener('load', startBgAnim);
+    bg.addEventListener('error', function() {
+      bg.style.filter = 'brightness(0.5)';
+      bg.style.transform = 'scale(1)';
+    });
+  }
 
-/* ─── MUSIC TOGGLE ────────────────────────────────── */
-var audio    = document.getElementById('bgMusic');
-var isPlaying = false;
-audio.volume = 0.55;
-
-function toggleMusic() {
-  var pill    = document.getElementById('musicPill');
-  var bars    = document.getElementById('barsIcon');
-  var playIco = document.getElementById('playIcon');
-  var label   = document.getElementById('pillLabel');
+  /* MUSIC */
+  var audio = document.getElementById('bgMusic');
+  var isPlaying = false;
+  audio.volume = 0.55;
 
   function showPlay() {
-    playIco.style.display = 'block';
-    playIco.style.opacity = '1';
-    bars.style.display    = 'none';
-    pill.classList.remove('playing');
-    label.textContent = 'Turn on the vibe';
+    document.getElementById('playIcon').style.display = 'block';
+    document.getElementById('barsIcon').style.display = 'none';
+    document.getElementById('musicPill').classList.remove('playing');
+    document.getElementById('pillLabel').textContent = 'Turn on the vibe';
   }
   function showBars() {
-    bars.style.display    = 'flex';
-    bars.style.opacity    = '1';
-    playIco.style.display = 'none';
-    pill.classList.add('playing');
-    label.textContent = 'Now playing';
+    document.getElementById('playIcon').style.display = 'none';
+    document.getElementById('barsIcon').style.display = 'flex';
+    document.getElementById('musicPill').classList.add('playing');
+    document.getElementById('pillLabel').textContent = 'Now playing';
   }
 
-  if (isPlaying) {
-    audio.pause();
-    isPlaying = false;
-    showPlay();
-  } else {
-    var playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise.then(function() {
-        isPlaying = true;
-        showBars();
-      }).catch(function() {
-        // autoplay blocked — stay in paused state, ensure play icon is visible
-        isPlaying = false;
-        showPlay();
-      });
+  window.toggleMusic = function() {
+    if (isPlaying) {
+      audio.pause(); isPlaying = false; showPlay();
     } else {
-      // Old browser fallback — no promise returned
-      isPlaying = true;
-      showBars();
+      var p = audio.play();
+      if (p !== undefined) {
+        p.then(function() { isPlaying = true; showBars(); })
+         .catch(function() { isPlaying = false; showPlay(); });
+      } else {
+        isPlaying = true; showBars();
+      }
     }
-  }
-}
+  };
 
-/* ─── TAGLINE WORD ANIMATION ──────────────────────── */
-(function() {
-  var text = "I think differently, move differently, exist differently. To understand me, you need elite-level knowledge. Not everyone can — and that's exactly how it should be. You either get it, or you don't.";
+  /* TAGLINE */
+  var tagText = "I think differently, move differently, exist differently. To understand me, you need elite-level knowledge. Not everyone can \u2014 and that\u2019s exactly how it should be. You either get it, or you don\u2019t.";
   var container = document.getElementById('taglineText');
-  var line      = document.getElementById('taglineLine');
-  if (!container) return;
-
-  var words = text.split(' ');
-  words.forEach(function(word, i) {
-    var span = document.createElement('span');
-    span.className = 'tagline-word';
-    span.textContent = word;
-    // FIX: delay starts after primary animations settle (~1.8s base + stagger)
-    span.style.animationDelay = (1.8 + i * 0.055) + 's';
-    container.appendChild(span);
-  });
-
-  // FIX: trigger immediately via class — no polling, no setTimeout race condition
-  requestAnimationFrame(function() {
+  var line = document.getElementById('taglineLine');
+  if (container) {
+    tagText.split(' ').forEach(function(word, i) {
+      var span = document.createElement('span');
+      span.className = 'tagline-word';
+      span.textContent = word;
+      span.style.animationDelay = (1.8 + i * 0.055) + 's';
+      container.appendChild(span);
+    });
     requestAnimationFrame(function() {
-      line.classList.add('visible');
-      container.querySelectorAll('.tagline-word').forEach(function(span) {
-        span.classList.add('visible');
+      requestAnimationFrame(function() {
+        line.classList.add('visible');
+        container.querySelectorAll('.tagline-word').forEach(function(s) { s.classList.add('visible'); });
       });
     });
+  }
+
+  /* MODAL */
+  window.openAnnouncement = function() {
+    var modal = document.getElementById('announcementModal');
+    modal.style.visibility = 'visible';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() { modal.classList.add('open'); });
+    });
+  };
+  window.closeAnnouncement = function() {
+    var modal = document.getElementById('announcementModal');
+    modal.classList.remove('open');
+    setTimeout(function() { modal.style.visibility = 'hidden'; }, 400);
+  };
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.closeAnnouncement();
   });
+
+  /* PAUSE ON HIDDEN TAB */
+  document.addEventListener('visibilitychange', function() {
+    var state = document.hidden ? 'paused' : 'running';
+    var ticker = document.querySelector('.ticker-track');
+    var grain  = document.querySelector('.grain');
+    if (ticker) ticker.style.animationPlayState = state;
+    if (grain)  grain.style.animationPlayState  = state;
+  });
+
 })();
+</script>
 
-/* ─── MODAL OPEN / CLOSE ──────────────────────────── */
-// FIX: pure CSS transition approach — no JS transform calculations,
-// no getBoundingClientRect jank, no display:none reflow mid-animation
-
-function openAnnouncement() {
-  var modal = document.getElementById('announcementModal');
-  modal.style.display = 'flex'; // needed for flex centering
-  requestAnimationFrame(function() {
-    modal.classList.add('open');
-  });
-}
-
-function closeAnnouncement() {
-  var modal = document.getElementById('announcementModal');
-  modal.classList.remove('open');
-  // FIX: hide after transition completes to prevent click-through
-  setTimeout(function() {
-    modal.style.display = 'none';
-  }, 400);
-}
-
-// FIX: allow Escape key to close modal
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeAnnouncement();
-});
-
-// FIX: pause ticker/grain animations when tab is hidden (saves GPU)
-document.addEventListener('visibilitychange', function() {
-  var ticker = document.querySelector('.ticker-track');
-  var grain  = document.querySelector('.grain');
-  if (ticker) ticker.style.animationPlayState = document.hidd
+</body>
+</html>
