@@ -111,7 +111,6 @@ body {
   #musicFixed { bottom: 46px; }
   #pillSong { max-width: 130px; }
   .copyright-fixed { bottom: 20px; }
-  .copyright { font-size: 10px; letter-spacing: 0.05em; }
 
   #modalCard { padding: 28px 24px; border-radius: 20px; }
   #modalTitle { font-size: 22px; }
@@ -138,7 +137,6 @@ body {
   #pillSong span { font-size: 11.5px; }
   #pillLabel { font-size: 9px; }
 
-  .copyright { font-size: 9.5px; }
   .copyright-fixed { bottom: 18px; }
 
   .ticker-item { font-size: 8.5px; padding-right: 50px; }
@@ -182,7 +180,6 @@ body {
   #barsIcon { height: 15px; }
 
   .copyright-fixed { bottom: 16px; }
-  .copyright { font-size: 9px; letter-spacing: 0.04em; }
 
   .ticker-item { font-size: 8px; padding-right: 40px; }
   .ticker-dot  { padding-right: 40px; font-size: 8px; }
@@ -211,7 +208,6 @@ body {
     padding: 6px 10px;
     gap: 5px;
   }
-  /* On very small screens, hide the label text and keep just the dot + short text */
   #announcementBtn .btn-label { display: none; }
 
   .tagline-section { bottom: 150px; width: 94vw; }
@@ -224,8 +220,6 @@ body {
   #pillSong { max-width: 96px; font-size: 10.5px; }
   #pillLabel { font-size: 8px; }
   #barsIcon div { width: 2.5px; }
-
-  .copyright { font-size: 8.5px; letter-spacing: 0.03em; }
 
   #modalCard { padding: 20px 16px; }
   #modalTitle { font-size: 18px; }
@@ -644,14 +638,19 @@ body {
   transform: translateX(-50%);
   z-index: 100;
   pointer-events: none;
+  white-space: nowrap;
+  width: max-content;
+  max-width: 96vw;
 }
 .copyright {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(10px,1.1vw,12px);
+  font-size: clamp(7.5px, 2vw, 12px);
   font-weight: 400;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.5);
+  white-space: nowrap;
+  display: inline-block;
 }
 
 /* ─── TICKER ─────────────────────────────────────────────── */
@@ -824,11 +823,24 @@ body {
   100% { transform: translateX(-100%); }
 }
 
+/* Play/pause icons — use visibility + opacity instead of display:none
+   so layout doesn't shift and icons never flash invisible */
+#playIcon {
+  display: block;
+  width: 15px; height: 15px;
+  fill: white;
+  margin-left: 2px;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+  opacity: 1;
+}
 #barsIcon {
   display: none;
   align-items: flex-end;
   gap: 2.5px;
   height: 18px;
+  opacity: 1;
+  transition: opacity 0.15s ease;
 }
 #barsIcon div {
   width: 3px;
@@ -885,7 +897,7 @@ body {
         </a>
 
         <!-- Email -->
-        <a href="mailto:hello@chidu.com" target="_blank" title="Email">
+        <a href="/cdn-cgi/l/email-protection#761e131a1a1936151e1f12035815191b" target="_blank" title="Email">
           <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
         </a>
 
@@ -902,7 +914,7 @@ body {
 
 <!-- Copyright -->
 <div class="copyright-fixed">
-  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;·&nbsp; v1.9</span>
+  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;·&nbsp; v1.9.5</span>
 </div>
 
 <!-- Ticker -->
@@ -921,7 +933,7 @@ body {
 <div id="musicFixed">
   <div id="musicPill" onclick="toggleMusic()">
     <div id="innerBtn">
-      <svg id="playIcon" viewBox="0 0 24 24" style="width:15px;height:15px;fill:white;margin-left:2px;">
+      <svg id="playIcon" viewBox="0 0 24 24">
         <path d="M8 5v14l11-7z"/>
       </svg>
       <div id="barsIcon">
@@ -968,7 +980,7 @@ body {
   <p class="tagline-text" id="taglineText"></p>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ─── BG IMAGE UNBLUR ─────────────────────────────── */
 var bg = document.querySelector('.bg');
 function startBgAnim() {
@@ -1000,26 +1012,40 @@ function toggleMusic() {
   var playIco = document.getElementById('playIcon');
   var label   = document.getElementById('pillLabel');
 
+  function showPlay() {
+    playIco.style.display = 'block';
+    playIco.style.opacity = '1';
+    bars.style.display    = 'none';
+    pill.classList.remove('playing');
+    label.textContent = 'Turn on the vibe';
+  }
+  function showBars() {
+    bars.style.display    = 'flex';
+    bars.style.opacity    = '1';
+    playIco.style.display = 'none';
+    pill.classList.add('playing');
+    label.textContent = 'Now playing';
+  }
+
   if (isPlaying) {
     audio.pause();
     isPlaying = false;
-    bars.style.display  = 'none';
-    playIco.style.display = 'block';
-    pill.classList.remove('playing');
-    label.textContent = 'Turn on the vibe';
+    showPlay();
   } else {
-    // FIX: catch play() promise rejection (browser autoplay policy)
     var playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise.then(function() {
         isPlaying = true;
-        bars.style.display  = 'flex';
-        playIco.style.display = 'none';
-        pill.classList.add('playing');
-        label.textContent = 'Now playing';
+        showBars();
       }).catch(function() {
-        // autoplay blocked — do nothing, stay in paused state
+        // autoplay blocked — stay in paused state, ensure play icon is visible
+        isPlaying = false;
+        showPlay();
       });
+    } else {
+      // Old browser fallback — no promise returned
+      isPlaying = true;
+      showBars();
     }
   }
 }
@@ -1082,10 +1108,4 @@ document.addEventListener('keydown', function(e) {
 document.addEventListener('visibilitychange', function() {
   var ticker = document.querySelector('.ticker-track');
   var grain  = document.querySelector('.grain');
-  if (ticker) ticker.style.animationPlayState = document.hidden ? 'paused' : 'running';
-  if (grain)  grain.style.animationPlayState  = document.hidden ? 'paused' : 'running';
-});
-</script>
-
-</body>
-</html>
+  if (ticker) ticker.style.animationPlayState = document.hidd
