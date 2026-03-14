@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Disable Cloudflare email obfuscation for this page -->
+<!-- email-decode: off -->
 <title>Chidu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,30 +13,20 @@
 
 /* ── RESET ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
 html { scroll-behavior:smooth; background:#2a2018; }
-body {
-  width:100%; min-height:100vh;
-  background:#2a2018;
-  font-family:'Inter',sans-serif;
-  overscroll-behavior:none;
-}
+body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',sans-serif; overscroll-behavior:none; }
 
 /* ── BACKGROUND ── */
 .bg {
-  position:fixed; inset:0;
-  width:100%; height:100%;
+  position:fixed; inset:0; width:100%; height:100%;
   object-fit:cover; object-position:50% 20%;
-  filter:brightness(0.78) blur(22px);
-  transform:scale(1.07);
-  z-index:0; display:block;
-  will-change:transform;
-  backface-visibility:hidden;
+  filter:brightness(0.78) blur(22px); transform:scale(1.07);
+  z-index:0; display:block; will-change:transform; backface-visibility:hidden;
 }
 .bg.loaded { animation:unblur 1.4s cubic-bezier(0.22,1,0.36,1) forwards; }
 @keyframes unblur {
   from { filter:brightness(0.78) blur(22px); transform:scale(1.07); }
-  to   { filter:brightness(0.78) blur(0px);  transform:scale(1);    }
+  to   { filter:brightness(0.78) blur(0px); transform:scale(1); }
 }
 @media (min-width:768px)  { .bg { object-position:50% 25%; } }
 @media (min-width:1024px) { .bg { object-position:50% 30%; } }
@@ -42,11 +34,9 @@ body {
 
 /* ── GRAIN ── */
 .grain {
-  position:fixed; inset:-100px; z-index:1;
-  pointer-events:none; opacity:0.055;
+  position:fixed; inset:-100px; z-index:1; pointer-events:none; opacity:0.055;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation:gr 0.7s steps(2) infinite;
-  mix-blend-mode:overlay; will-change:transform;
+  animation:gr 0.7s steps(2) infinite; mix-blend-mode:overlay; will-change:transform;
 }
 @keyframes gr {
   0%   { transform:translate(0,0); }
@@ -89,8 +79,7 @@ body {
   100% { opacity:1; transform:translateX(0); }
 }
 .letter {
-  display:inline-block; opacity:0;
-  will-change:transform,opacity;
+  display:inline-block; opacity:0; will-change:transform,opacity;
   animation:letterSlide 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
   animation-delay:calc(0.07s * var(--i) + 0.6s);
 }
@@ -105,8 +94,7 @@ body {
 /* ── SOCIALS ── */
 .socials {
   display:flex; align-items:center;
-  gap:clamp(16px,3vw,28px);
-  margin-top:clamp(4px,1vw,8px); margin-left:14px;
+  gap:clamp(16px,3vw,28px); margin-top:clamp(4px,1vw,8px); margin-left:14px;
 }
 .socials a {
   color:rgba(255,255,255,0.85); text-decoration:none;
@@ -118,22 +106,17 @@ body {
 
 /* ── ANNOUNCEMENT BUTTON ── */
 #announcementBtn {
-  position:fixed;
-  top:clamp(28px,5vw,52px); right:clamp(14px,3vw,40px);
-  z-index:10000;
-  display:flex; align-items:center; gap:8px;
+  position:fixed; top:clamp(28px,5vw,52px); right:clamp(14px,3vw,40px);
+  z-index:10000; display:flex; align-items:center; gap:8px;
   padding:clamp(7px,1.2vw,11px) clamp(12px,2vw,20px);
   background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(20px) saturate(160%);
-  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%);
   border:1px solid rgba(255,255,255,0.18); border-radius:999px;
-  cursor:pointer; color:#fff;
-  font-family:'Inter',sans-serif; font-size:clamp(9px,1.1vw,11px);
-  font-weight:600; letter-spacing:0.07em; text-transform:uppercase;
+  cursor:pointer; color:#fff; font-family:'Inter',sans-serif;
+  font-size:clamp(9px,1.1vw,11px); font-weight:600; letter-spacing:0.07em; text-transform:uppercase;
   box-shadow:0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.12);
   transition:background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  animation:fadeSlideDown 0.6s cubic-bezier(0.22,1,0.36,1) 2.2s both;
-  white-space:nowrap;
+  animation:fadeSlideDown 0.6s cubic-bezier(0.22,1,0.36,1) 2.2s both; white-space:nowrap;
 }
 #announcementBtn:hover {
   background:rgba(255,255,255,0.14); transform:translateY(-2px);
@@ -156,23 +139,17 @@ body {
 /* ── MODAL ── */
 #announcementModal {
   position:fixed; inset:0; z-index:99999;
-  display:flex; align-items:center; justify-content:center;
-  padding:24px;
+  display:flex; align-items:center; justify-content:center; padding:24px;
   pointer-events:none; opacity:0; visibility:hidden;
   transition:opacity 0.25s ease, visibility 0.25s ease;
 }
-#announcementModal.open {
-  pointer-events:all; opacity:1; visibility:visible;
-}
+#announcementModal.open { pointer-events:all; opacity:1; visibility:visible; }
 #modalBackdrop {
-  position:absolute; inset:0;
-  background:rgba(0,0,0,0.5);
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  cursor:pointer;
+  position:absolute; inset:0; background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); cursor:pointer;
 }
 #modalCard {
-  position:relative; z-index:1;
-  background:rgba(22,18,12,0.65);
+  position:relative; z-index:1; background:rgba(22,18,12,0.65);
   backdrop-filter:blur(32px) saturate(160%) brightness(1.05);
   -webkit-backdrop-filter:blur(32px) saturate(160%) brightness(1.05);
   border:1px solid rgba(255,255,255,0.14); border-radius:24px;
@@ -183,8 +160,7 @@ body {
 }
 #announcementModal.open #modalCard { transform:scale(1) translateY(0); opacity:1; }
 #modalClose {
-  position:absolute; top:16px; right:16px;
-  width:32px; height:32px; border-radius:50%;
+  position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%;
   background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
   color:rgba(255,255,255,0.7); font-size:14px;
   display:flex; align-items:center; justify-content:center;
@@ -232,24 +208,20 @@ body {
 
 /* ── COPYRIGHT ── */
 .copyright-fixed {
-  position:fixed; bottom:clamp(16px,3vw,32px); left:50%; transform:translateX(-50%);
-  z-index:100; pointer-events:none;
-  white-space:nowrap; width:max-content; max-width:96vw;
+  position:fixed; bottom:clamp(16px,3vw,32px);
+  left:0; right:0; z-index:100; pointer-events:none;
+  display:flex; justify-content:center; align-items:center;
 }
 .copyright {
   font-family:'Inter',sans-serif; font-size:clamp(7.5px,2vw,12px);
   font-weight:400; letter-spacing:0.05em; text-transform:uppercase;
-  color:rgba(255,255,255,0.5); white-space:nowrap; display:inline-block;
+  color:rgba(255,255,255,0.5); white-space:nowrap; text-align:center;
 }
 
 /* ── TICKER ── */
-.ticker-wrap {
-  position:fixed; bottom:0; left:0; right:0;
-  height:22px; overflow:hidden; z-index:9998; pointer-events:none;
-}
+.ticker-wrap { position:fixed; bottom:0; left:0; right:0; height:22px; overflow:hidden; z-index:9998; pointer-events:none; }
 .ticker-track { display:flex; white-space:nowrap; animation:ticker-scroll 42s linear infinite; will-change:transform; }
 .ticker-item { font-family:'Inter',sans-serif; font-size:9px; font-weight:400; letter-spacing:0.09em; color:rgba(255,255,255,0.55); text-shadow:0 0 12px rgba(255,255,255,0.2); padding:4px 0; flex-shrink:0; padding-right:80px; }
-.ticker-dot { color:rgba(255,255,255,0.3); padding-right:80px; font-size:9px; }
 @keyframes ticker-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
 
 /* ── MUSIC ── */
@@ -290,7 +262,6 @@ body {
 }
 #musicPill:hover { background:rgba(255,255,255,0.12); transform:translateY(-2px); }
 #musicPill.playing { animation:liquidPulse 2.2s ease-out infinite; }
-
 #innerBtn {
   width:36px; height:36px; border-radius:50%;
   background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.22);
@@ -299,11 +270,9 @@ body {
   flex-shrink:0; transition:background 0.2s ease;
 }
 #musicPill:hover #innerBtn { background:rgba(255,255,255,0.2); }
-
 #playIcon { display:block; width:15px; height:15px; fill:white; margin-left:2px; flex-shrink:0; }
 #barsIcon { display:none; align-items:flex-end; gap:2.5px; height:18px; }
 #barsIcon div { width:3px; background:rgba(255,255,255,0.9); border-radius:2px; }
-
 #pillText { display:flex; flex-direction:column; gap:3px; }
 #pillLabel { font-size:9.5px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.42); line-height:1; }
 #pillSong { font-size:12px; font-weight:700; color:rgba(255,255,255,0.9); letter-spacing:0.01em; line-height:1.3; white-space:nowrap; overflow:hidden; max-width:145px; }
@@ -313,99 +282,67 @@ body {
 /* ── REDUCED MOTION ── */
 @media (prefers-reduced-motion:reduce) { .ticker-track, .grain { animation:none; } }
 
-/* ─── RESPONSIVE ─── */
+/* ── RESPONSIVE ── */
 @media (min-width:1600px) {
-  .content { padding:60px 64px; }
-  .name { font-size:200px; }
+  .content { padding:60px 64px; } .name { font-size:200px; }
   #announcementBtn { top:60px; right:60px; font-size:11px; padding:12px 22px; }
-  .tagline-section { bottom:200px; }
-  #musicFixed { bottom:60px; }
-  .copyright-fixed { bottom:36px; }
+  .tagline-section { bottom:200px; } #musicFixed { bottom:60px; } .copyright-fixed { bottom:36px; }
 }
 @media (max-width:1024px) and (min-width:769px) {
   .name { font-size:clamp(80px,14vw,130px); }
-  .tagline-section { bottom:175px; width:80vw; }
-  .tagline-text { font-size:13.5px; }
-  #musicFixed { bottom:50px; }
-  .copyright-fixed { bottom:22px; }
+  .tagline-section { bottom:175px; width:80vw; } .tagline-text { font-size:13.5px; }
+  #musicFixed { bottom:50px; } .copyright-fixed { bottom:22px; }
 }
 @media (max-width:768px) {
-  .name { font-size:clamp(68px,16vw,110px); }
-  .content { padding:32px 28px; }
-  .socials { gap:18px; margin-left:8px; }
-  .socials svg { width:22px; height:22px; }
+  .name { font-size:clamp(68px,16vw,110px); } .content { padding:32px 28px; }
+  .socials { gap:18px; margin-left:8px; } .socials svg { width:22px; height:22px; }
   .bio { max-width:100%; font-size:12px; }
   .tagline-section { bottom:168px; width:88vw; gap:12px; }
-  .tagline-text { font-size:13px; line-height:1.8; }
-  .tagline-line { width:32px; }
+  .tagline-text { font-size:13px; line-height:1.8; } .tagline-line { width:32px; }
   #announcementBtn { top:28px; right:20px; font-size:9.5px; padding:8px 14px; gap:7px; }
-  #musicFixed { bottom:46px; }
-  #pillSong { max-width:130px; }
-  .copyright-fixed { bottom:20px; }
-  #modalCard { padding:28px 24px; border-radius:20px; }
-  #modalTitle { font-size:22px; }
+  #musicFixed { bottom:46px; } #pillSong { max-width:130px; } .copyright-fixed { bottom:20px; }
+  #modalCard { padding:28px 24px; border-radius:20px; } #modalTitle { font-size:22px; }
 }
 @media (max-width:600px) {
-  .name { font-size:clamp(62px,17vw,90px); }
-  .content { padding:28px 22px; }
+  .name { font-size:clamp(62px,17vw,90px); } .content { padding:28px 22px; }
   .tagline-section { bottom:162px; width:90vw; gap:10px; }
   .tagline-text { font-size:12.5px; line-height:1.75; }
   #announcementBtn { top:24px; right:16px; font-size:9px; padding:7px 12px; gap:6px; }
-  #musicFixed { bottom:44px; }
-  #pillSong { max-width:120px; }
-  #pillSong span { font-size:11.5px; }
-  #pillLabel { font-size:9px; }
+  #musicFixed { bottom:44px; } #pillSong { max-width:120px; }
+  #pillSong span { font-size:11.5px; } #pillLabel { font-size:9px; }
   .copyright-fixed { bottom:18px; }
   .ticker-item { font-size:8.5px; padding-right:50px; }
-  .ticker-dot  { padding-right:50px; font-size:8.5px; }
 }
 @media (max-width:480px) {
-  .name { font-size:clamp(58px,17.5vw,78px); }
-  .content { padding:24px 18px; }
-  .top { gap:10px; }
-  .socials { gap:14px; margin-left:6px; }
-  .socials svg { width:20px; height:20px; }
+  .name { font-size:clamp(58px,17.5vw,78px); } .content { padding:24px 18px; }
+  .top { gap:10px; } .socials { gap:14px; margin-left:6px; } .socials svg { width:20px; height:20px; }
   .bio { max-width:100%; font-size:11.5px; }
   .tagline-section { bottom:156px; width:92vw; gap:9px; }
-  .tagline-text { font-size:12px; line-height:1.72; }
-  .tagline-line { width:26px; }
+  .tagline-text { font-size:12px; line-height:1.72; } .tagline-line { width:26px; }
   #announcementBtn { top:20px; right:14px; font-size:8.5px; padding:7px 11px; gap:5px; letter-spacing:0.05em; }
   #announcementBtn .btn-dot { width:5px; height:5px; }
-  #musicFixed { bottom:42px; }
-  #musicPill { gap:11px; padding:9px 14px 9px 11px; }
-  #innerBtn { width:32px; height:32px; }
-  #pillSong { max-width:110px; font-size:11px; }
-  #pillLabel { font-size:8.5px; }
-  #barsIcon { height:15px; }
+  #musicFixed { bottom:42px; } #musicPill { gap:11px; padding:9px 14px 9px 11px; }
+  #innerBtn { width:32px; height:32px; } #pillSong { max-width:110px; font-size:11px; }
+  #pillLabel { font-size:8.5px; } #barsIcon { height:15px; }
   .copyright-fixed { bottom:16px; }
-  .ticker-item { font-size:8px; padding-right:40px; }
-  .ticker-dot  { padding-right:40px; font-size:8px; }
-  .ticker-wrap { height:20px; }
+  .ticker-item { font-size:8px; padding-right:40px; } .ticker-wrap { height:20px; }
   #modalCard { padding:24px 18px; border-radius:18px; max-width:100%; margin:0 8px; }
   #modalTitle { font-size:20px; margin-bottom:16px; }
   #modalBody { font-size:13px; line-height:1.75; max-height:48vh; }
-  #modalTag { font-size:8.5px; }
-  #modalDate { font-size:9.5px; }
+  #modalTag { font-size:8.5px; } #modalDate { font-size:9.5px; }
   #modalClose { width:28px; height:28px; font-size:12px; top:12px; right:12px; }
 }
 @media (max-width:360px) {
-  .name { font-size:54px; }
-  .content { padding:20px 16px; }
-  .socials { gap:12px; margin-left:4px; }
-  .socials svg { width:18px; height:18px; }
+  .name { font-size:54px; } .content { padding:20px 16px; }
+  .socials { gap:12px; margin-left:4px; } .socials svg { width:18px; height:18px; }
   #announcementBtn { top:16px; right:12px; font-size:8px; padding:6px 10px; gap:5px; }
   #announcementBtn .btn-label { display:none; }
-  .tagline-section { bottom:150px; width:94vw; }
-  .tagline-text { font-size:11px; line-height:1.68; }
-  .tagline-line { width:22px; }
-  #musicFixed { bottom:38px; }
-  #musicPill { gap:10px; padding:8px 12px 8px 10px; }
-  #innerBtn { width:30px; height:30px; }
-  #pillSong { max-width:96px; font-size:10.5px; }
-  #pillLabel { font-size:8px; }
+  .tagline-section { bottom:150px; width:94vw; } .tagline-text { font-size:11px; line-height:1.68; }
+  .tagline-line { width:22px; } #musicFixed { bottom:38px; }
+  #musicPill { gap:10px; padding:8px 12px 8px 10px; } #innerBtn { width:30px; height:30px; }
+  #pillSong { max-width:96px; font-size:10.5px; } #pillLabel { font-size:8px; }
   #barsIcon div { width:2.5px; }
-  #modalCard { padding:20px 16px; }
-  #modalTitle { font-size:18px; }
+  #modalCard { padding:20px 16px; } #modalTitle { font-size:18px; }
   #modalBody { font-size:12.5px; max-height:44vh; }
 }
 @supports (padding: max(0px)) {
@@ -454,7 +391,7 @@ body {
         <a href="#" target="_blank" rel="noopener" title="LinkedIn">
           <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.881 3.87 6 2.5 6S.02 4.881.02 3.5C.02 2.12 1.13 1 2.5 1s2.48 1.12 2.48 2.5zM5 8H0v16h5V8zm7.982 0H8.014v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0V24H24V13.869c0-7.88-8.922-7.593-11.018-3.714V8z"/></svg>
         </a>
-        <a href="mailto:expensiveblood2007@gmail.com" title="Email">
+        <a id="emailLink" href="#" title="Email" onclick="window.location.href='mai'+'lto:'+'expensiveblood2007'+'@'+'gmail.com'; return false;">
           <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
         </a>
         <a href="https://music.apple.com/in/playlist/play-infinity/pl.u-EdAVkGeIDYA7JLK" target="_blank" rel="noopener" title="Playlist">
@@ -467,7 +404,7 @@ body {
 
 <!-- Copyright -->
 <div class="copyright-fixed">
-  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;&middot;&nbsp; v1.9.7</span>
+  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;&middot;&nbsp; v1.9.8</span>
 </div>
 
 <!-- Ticker -->
@@ -531,10 +468,16 @@ body {
   <p class="tagline-text" id="taglineText"></p>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 (function() {
 
-  /* BG UNBLUR */
+  /* ── EMAIL: built at runtime so Cloudflare can never obfuscate it ── */
+  var eLink = document.getElementById('emailLink');
+  var eAddr = 'expensiveblood2007' + '@' + 'gmail.com';
+  eLink.href = 'mailto:' + eAddr;
+  eLink.onclick = null;
+
+  /* ── BG UNBLUR ── */
   var bg = document.querySelector('.bg');
   function startBgAnim() {
     requestAnimationFrame(function() {
@@ -551,7 +494,7 @@ body {
     });
   }
 
-  /* MUSIC */
+  /* ── MUSIC ── */
   var audio = document.getElementById('bgMusic');
   var isPlaying = false;
   audio.volume = 0.55;
@@ -583,7 +526,7 @@ body {
     }
   };
 
-  /* TAGLINE */
+  /* ── TAGLINE ── */
   var tagText = "I think differently, move differently, exist differently. To understand me, you need elite-level knowledge. Not everyone can \u2014 and that\u2019s exactly how it should be. You either get it, or you don\u2019t.";
   var container = document.getElementById('taglineText');
   var line = document.getElementById('taglineLine');
@@ -603,7 +546,7 @@ body {
     });
   }
 
-  /* MODAL */
+  /* ── MODAL ── */
   window.openAnnouncement = function() {
     var modal = document.getElementById('announcementModal');
     modal.style.visibility = 'visible';
@@ -620,9 +563,17 @@ body {
     if (e.key === 'Escape') window.closeAnnouncement();
   });
 
-  /* PAUSE ON HIDDEN TAB */
+  /* ── PAUSE ANIMATIONS ON HIDDEN TAB ── */
   document.addEventListener('visibilitychange', function() {
     var state = document.hidden ? 'paused' : 'running';
     var ticker = document.querySelector('.ticker-track');
     var grain  = document.querySelector('.grain');
-    if
+    if (ticker) ticker.style.animationPlayState = state;
+    if (grain)  grain.style.animationPlayState  = state;
+  });
+
+})();
+</script>
+
+</body>
+</html>
