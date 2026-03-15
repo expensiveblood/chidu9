@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <!-- Disable Cloudflare email obfuscation for this page -->
 <!-- email-decode: off -->
 <title>Chidu</title>
@@ -14,7 +14,17 @@
 /* ── RESET ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; background:#2a2018; }
-body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',sans-serif; overscroll-behavior:none; }
+body {
+  width:100%; min-height:100vh; background:#2a2018;
+  font-family:'Inter',sans-serif; overscroll-behavior:none;
+  /* Disable text selection / copy on entire site */
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  /* Disable callout on iOS (no copy menu on long press) */
+  -webkit-touch-callout:none;
+}
 
 /* ── BACKGROUND ── */
 .bg {
@@ -104,51 +114,101 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
 .socials a:hover { color:#fff; transform:scale(1.15); }
 .socials svg { width:clamp(20px,3.2vw,26px); height:clamp(20px,3.2vw,26px); fill:currentColor; }
 
-/* ── ANNOUNCEMENT BUTTON ── */
-#announcementBtn {
+/* ── MENU CIRCLE BUTTON ── */
+#menuBtn {
   position:fixed; top:clamp(28px,5vw,52px); right:clamp(14px,3vw,40px);
-  z-index:10000; display:flex; align-items:center; gap:8px;
-  padding:clamp(7px,1.2vw,11px) clamp(12px,2vw,20px);
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%);
-  border:1px solid rgba(255,255,255,0.18); border-radius:999px;
-  cursor:pointer; color:#fff; font-family:'Inter',sans-serif;
-  font-size:clamp(9px,1.1vw,11px); font-weight:600; letter-spacing:0.07em; text-transform:uppercase;
-  box-shadow:0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.12);
-  transition:background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  animation:fadeSlideDown 0.6s cubic-bezier(0.22,1,0.36,1) 2.2s both; white-space:nowrap;
+  z-index:100001;
+  width:clamp(40px,5vw,52px); height:clamp(40px,5vw,52px);
+  border-radius:50%;
+  background:rgba(42,32,24,0.82);
+  backdrop-filter:blur(50px) saturate(180%) brightness(1.1);
+  -webkit-backdrop-filter:blur(50px) saturate(180%) brightness(1.1);
+  border:1px solid rgba(255,255,255,0.15);
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.1), 0 8px 32px rgba(0,0,0,0.3);
+  cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  transition:background 0.25s ease, transform 0.22s ease;
+  animation:fadeSlideDown 0.6s cubic-bezier(0.22,1,0.36,1) 2.2s both;
 }
-#announcementBtn:hover {
-  background:rgba(255,255,255,0.14); transform:translateY(-2px);
-  box-shadow:0 12px 40px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.18);
-}
-#announcementBtn .btn-dot {
-  width:6px; height:6px; border-radius:50%;
-  background:#fff; box-shadow:0 0 8px rgba(255,255,255,0.9);
-  animation:dotPulse 2.2s ease-in-out infinite; flex-shrink:0;
-}
-@keyframes dotPulse {
-  0%,100% { opacity:1; transform:scale(1); }
-  50%     { opacity:0.4; transform:scale(0.65); }
-}
+#menuBtn:hover { background:rgba(52,40,28,0.9); transform:scale(1.06); }
+#menuBtn.open { background:rgba(52,40,28,0.9); }
 @keyframes fadeSlideDown {
-  0%   { opacity:0; transform:translateY(-16px) scale(0.96); filter:blur(2px); }
+  0%   { opacity:0; transform:translateY(-14px) scale(0.9); filter:blur(2px); }
   100% { opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
 }
+.menu-line {
+  width:clamp(14px,2vw,18px); height:1.5px;
+  background:rgba(255,255,255,0.9); border-radius:2px;
+  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1), width 0.3s ease;
+}
+.menu-line:nth-child(2) { width:clamp(10px,1.5vw,13px); }
+#menuBtn.open .menu-line:nth-child(1) { transform:translateY(3.75px) rotate(45deg); width:clamp(14px,2vw,18px); }
+#menuBtn.open .menu-line:nth-child(2) { transform:translateY(-3.75px) rotate(-45deg); width:clamp(14px,2vw,18px); }
 
-/* ── MODAL ── */
-#announcementModal {
-  position:fixed; inset:0; z-index:99999;
+/* ── MENU BACKDROP ── */
+#menuBackdrop {
+  position:fixed; inset:0; z-index:100000;
+  background:rgba(0,0,0,0.3);
+  backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+  opacity:0; visibility:hidden;
+  transition:opacity 0.3s ease, visibility 0.3s ease; cursor:pointer;
+}
+#menuBackdrop.open { opacity:1; visibility:visible; }
+
+/* ── DROPDOWN PANEL ── */
+#menuPanel {
+  position:fixed;
+  top:calc(clamp(28px,5vw,52px) + 58px); right:clamp(14px,3vw,40px);
+  z-index:100001;
+  transform:translateY(-8px) scale(0.97); opacity:0; visibility:hidden;
+  transition:transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease, visibility 0.3s ease;
+  transform-origin:top right;
+}
+#menuPanel.open { transform:translateY(0) scale(1); opacity:1; visibility:visible; }
+
+.menu-pill {
+  background:rgba(16,12,8,0.75);
+  backdrop-filter:blur(40px) saturate(160%); -webkit-backdrop-filter:blur(40px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.12); border-radius:18px; padding:6px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  display:flex; flex-direction:column; gap:2px; min-width:190px;
+}
+.menu-item {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 16px; border-radius:12px; cursor:pointer;
+  background:rgba(255,255,255,0); transition:background 0.2s ease;
+  opacity:0; transform:translateY(6px); text-decoration:none;
+}
+#menuPanel.open .menu-item:nth-child(1) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.07s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.07s; }
+#menuPanel.open .menu-item:nth-child(2) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.13s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.13s; }
+#menuPanel.open .menu-item:nth-child(3) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.19s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.19s; }
+#menuPanel.open .menu-item:nth-child(4) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.25s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.25s; }
+#menuPanel.open .menu-item:nth-child(5) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.31s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.31s; }
+.menu-item:hover { background:rgba(255,255,255,0.08); }
+.menu-item-label { font-family:'Inter',sans-serif; font-size:12px; font-weight:600; color:rgba(255,255,255,0.88); letter-spacing:0.02em; }
+.menu-item-arrow { font-size:10px; color:rgba(255,255,255,0.3); transition:color 0.2s, transform 0.2s; }
+.menu-item:hover .menu-item-arrow { color:rgba(255,255,255,0.7); transform:translateX(2px); }
+.menu-live-dot {
+  width:5px; height:5px; border-radius:50%; background:#fff; flex-shrink:0;
+  box-shadow:0 0 6px rgba(255,255,255,0.8); animation:dotPulse 2.2s ease-in-out infinite;
+}
+@keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.6);} }
+.menu-sep { height:1px; background:rgba(255,255,255,0.18); margin:3px 8px; opacity:0; transition:opacity 0.3s ease 0.2s; }
+#menuPanel.open .menu-sep { opacity:1; }
+
+/* ── SHARED MODAL STYLES ── */
+.modal-wrap {
+  position:fixed; inset:0; z-index:200000;
   display:flex; align-items:center; justify-content:center; padding:24px;
   pointer-events:none; opacity:0; visibility:hidden;
   transition:opacity 0.25s ease, visibility 0.25s ease;
 }
-#announcementModal.open { pointer-events:all; opacity:1; visibility:visible; }
-#modalBackdrop {
+.modal-wrap.open { pointer-events:all; opacity:1; visibility:visible; }
+.modal-backdrop {
   position:absolute; inset:0; background:rgba(0,0,0,0.5);
   backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); cursor:pointer;
 }
-#modalCard {
+.modal-card {
   position:relative; z-index:1; background:rgba(22,18,12,0.65);
   backdrop-filter:blur(32px) saturate(160%) brightness(1.05);
   -webkit-backdrop-filter:blur(32px) saturate(160%) brightness(1.05);
@@ -158,30 +218,108 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
   transform:scale(0.94) translateY(12px); opacity:0;
   transition:transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
 }
-#announcementModal.open #modalCard { transform:scale(1) translateY(0); opacity:1; }
-#modalClose {
+.modal-wrap.open .modal-card { transform:scale(1) translateY(0); opacity:1; }
+.modal-close-btn {
   position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%;
   background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
   color:rgba(255,255,255,0.7); font-size:14px;
   display:flex; align-items:center; justify-content:center;
   cursor:pointer; transition:background 0.2s, color 0.2s, transform 0.2s; line-height:1;
 }
-#modalClose:hover { background:rgba(255,255,255,0.16); color:#fff; transform:scale(1.08) rotate(90deg); }
-#modalTag { font-family:'Inter',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:10px; }
-#modalTitle { font-family:'Inter',sans-serif; font-size:clamp(20px,3.5vw,28px); font-weight:700; color:#fff; letter-spacing:-0.01em; margin-bottom:20px; line-height:1.1; }
-#modalBody {
-  font-family:'Inter',sans-serif; font-size:clamp(13px,1.3vw,14.5px);
-  font-weight:400; line-height:1.8; color:rgba(255,255,255,0.72); letter-spacing:0.005em;
-  max-height:50vh; overflow-y:auto; -webkit-overflow-scrolling:touch;
-  padding-right:8px; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,0.15) transparent;
+.modal-close-btn:hover { background:rgba(255,255,255,0.16); color:#fff; transform:scale(1.08) rotate(90deg); }
+.modal-tag { font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:10px; }
+.modal-title { font-size:clamp(20px,3.5vw,28px); font-weight:700; color:#fff; letter-spacing:-0.01em; margin-bottom:20px; line-height:1.1; }
+.modal-body {
+  font-size:clamp(13px,1.3vw,14.5px); font-weight:400; line-height:1.85;
+  color:rgba(255,255,255,0.72); letter-spacing:0.005em;
+  max-height:50vh; overflow-y:auto; padding-right:8px;
+  scrollbar-width:thin; scrollbar-color:rgba(255,255,255,0.15) transparent;
 }
-#modalBody::-webkit-scrollbar { width:3px; }
-#modalBody::-webkit-scrollbar-track { background:transparent; }
-#modalBody::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:999px; }
-#modalBody p { margin-bottom:16px; }
-#modalBody p:last-child { margin-bottom:0; }
-.modal-divider { width:100%; height:1px; background:rgba(255,255,255,0.08); margin:16px 0; }
-#modalDate { margin-top:22px; font-family:'Inter',sans-serif; font-size:10px; font-weight:500; color:rgba(255,255,255,0.3); letter-spacing:0.08em; text-transform:uppercase; }
+.modal-body::-webkit-scrollbar { width:3px; }
+.modal-body::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:999px; }
+.modal-body p { margin-bottom:16px; }
+.modal-body p:last-child { margin-bottom:0; }
+.modal-divider-line { width:100%; height:1px; background:rgba(255,255,255,0.08); margin:16px 0; }
+.modal-date { margin-top:22px; font-size:10px; font-weight:500; color:rgba(255,255,255,0.3); letter-spacing:0.08em; text-transform:uppercase; }
+
+/* ── HER MODAL ── */
+.her-card { max-width:680px; padding:clamp(20px,4vw,36px) !important; }
+.her-inner { display:flex; flex-direction:row; gap:clamp(20px,3vw,28px); align-items:flex-start; }
+.her-photo-wrap {
+  width:clamp(140px,26%,200px); flex-shrink:0; aspect-ratio:3/4;
+  border-radius:14px; overflow:hidden;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 12px 40px rgba(0,0,0,0.35); background:#1a1410;
+}
+.her-photo {
+  width:100%; height:100%;
+  object-fit:cover;
+  /* Fix: show faces — center vertically so people are visible not ceiling */
+  object-position:center 30%;
+  display:block;
+}
+.her-text { flex:1; display:flex; flex-direction:column; justify-content:center; }
+.her-caption {
+  font-family:'Barlow Condensed',sans-serif; font-size:clamp(18px,2.5vw,26px);
+  font-weight:800; text-transform:uppercase; color:#fff;
+  letter-spacing:0.03em; line-height:1.05; margin-bottom:12px;
+}
+.her-divider { width:28px; height:1px; background:rgba(255,255,255,0.2); margin-bottom:14px; }
+
+/* Mobile — stack vertically, close button moved below photo area */
+@media (max-width:600px) {
+  .her-card {
+    max-width:100%; margin:0 8px !important;
+    /* Extra top padding so close button sits above photo cleanly */
+    padding-top:52px !important;
+  }
+  .her-inner { flex-direction:column; gap:14px; }
+  .her-photo-wrap {
+    width:100%;
+    /* Square crop on mobile — shows both people */
+    aspect-ratio:1/1;
+    border-radius:12px;
+  }
+  .her-photo {
+    /* Center on faces for square crop */
+    object-position:center 35%;
+  }
+  .her-caption { font-size:17px; }
+}
+@media (max-width:360px) {
+  .her-caption { font-size:15px; }
+  .her-photo { object-position:center 30%; }
+}
+
+/* Landscape phone */
+@media (max-height:520px) and (orientation:landscape) {
+  .her-inner { flex-direction:row; }
+  .her-photo-wrap { width:110px; aspect-ratio:3/4; }
+  .her-photo { object-position:center 30%; }
+}
+
+/* Responsive modal adjustments */
+@media (max-width:480px) {
+  .modal-card { padding:24px 18px !important; border-radius:18px; max-width:100%; margin:0 8px; }
+  .modal-title { font-size:20px; margin-bottom:16px; }
+  .modal-body { font-size:13px; max-height:48vh; }
+  .modal-close-btn { width:28px; height:28px; font-size:12px; top:12px; right:12px; }
+}
+
+/* Her modal close button — always stays in the top padding, never over photo */
+#herModal .modal-close-btn {
+  top:clamp(12px,2vw,16px);
+  right:clamp(12px,2vw,16px);
+  z-index:10;
+}
+
+/* safe area for menu */
+@supports (padding: max(0px)) {
+  #menuBtn {
+    top:max(clamp(28px,5vw,52px), env(safe-area-inset-top));
+    right:max(clamp(14px,3vw,40px), env(safe-area-inset-right));
+  }
+}
 
 /* ── TAGLINE ── */
 .tagline-section {
@@ -248,28 +386,32 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
 #musicPill {
   pointer-events:all; display:flex; align-items:center;
   gap:14px; padding:10px 18px 10px 14px; border-radius:999px;
-  background:rgba(255,255,255,0.07);
-  backdrop-filter:blur(22px) saturate(160%); -webkit-backdrop-filter:blur(22px) saturate(160%);
-  border:1px solid rgba(255,255,255,0.16);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.45), 0 8px 32px rgba(0,0,0,0.28);
+  background:rgba(42,32,24,0.82);
+  backdrop-filter:blur(50px) saturate(180%) brightness(1.1);
+  -webkit-backdrop-filter:blur(50px) saturate(180%) brightness(1.1);
+  border:1px solid rgba(255,255,255,0.22);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.35),
+    inset 0 -1px 0 rgba(0,0,0,0.08),
+    0 8px 32px rgba(0,0,0,0.2);
   cursor:pointer; transition:background 0.3s ease, transform 0.2s ease;
   position:relative; overflow:hidden;
 }
 #musicPill::before {
   content:''; position:absolute; top:0; left:-100%; right:-100%; height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
   background-size:200% auto; animation:shimmer 3.5s linear infinite;
 }
-#musicPill:hover { background:rgba(255,255,255,0.12); transform:translateY(-2px); }
+#musicPill:hover { background:rgba(52,40,28,0.9); transform:translateY(-2px); }
 #musicPill.playing { animation:liquidPulse 2.2s ease-out infinite; }
 #innerBtn {
   width:36px; height:36px; border-radius:50%;
-  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.22);
+  background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.28);
   box-shadow:inset 0 1px 0 rgba(255,255,255,0.45);
   display:flex; align-items:center; justify-content:center;
   flex-shrink:0; transition:background 0.2s ease;
 }
-#musicPill:hover #innerBtn { background:rgba(255,255,255,0.2); }
+#musicPill:hover #innerBtn { background:rgba(255,255,255,0.3); }
 #playIcon { display:block; width:15px; height:15px; fill:white; margin-left:2px; flex-shrink:0; }
 #barsIcon { display:none; align-items:flex-end; gap:2.5px; height:18px; }
 #barsIcon div { width:3px; background:rgba(255,255,255,0.9); border-radius:2px; }
@@ -285,7 +427,7 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
 /* ── RESPONSIVE ── */
 @media (min-width:1600px) {
   .content { padding:60px 64px; } .name { font-size:200px; }
-  #announcementBtn { top:60px; right:60px; font-size:11px; padding:12px 22px; }
+  #menuBtn { top:60px; right:60px; }
   .tagline-section { bottom:200px; } #musicFixed { bottom:60px; } .copyright-fixed { bottom:36px; }
 }
 @media (max-width:1024px) and (min-width:769px) {
@@ -299,7 +441,7 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
   .bio { max-width:100%; font-size:12px; }
   .tagline-section { bottom:168px; width:88vw; gap:12px; }
   .tagline-text { font-size:13px; line-height:1.8; } .tagline-line { width:32px; }
-  #announcementBtn { top:28px; right:20px; font-size:9.5px; padding:8px 14px; gap:7px; }
+  
   #musicFixed { bottom:46px; } #pillSong { max-width:130px; } .copyright-fixed { bottom:20px; }
   #modalCard { padding:28px 24px; border-radius:20px; } #modalTitle { font-size:22px; }
 }
@@ -307,7 +449,7 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
   .name { font-size:clamp(62px,17vw,90px); } .content { padding:28px 22px; }
   .tagline-section { bottom:162px; width:90vw; gap:10px; }
   .tagline-text { font-size:12.5px; line-height:1.75; }
-  #announcementBtn { top:24px; right:16px; font-size:9px; padding:7px 12px; gap:6px; }
+  
   #musicFixed { bottom:44px; } #pillSong { max-width:120px; }
   #pillSong span { font-size:11.5px; } #pillLabel { font-size:9px; }
   .copyright-fixed { bottom:18px; }
@@ -319,8 +461,8 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
   .bio { max-width:100%; font-size:11.5px; }
   .tagline-section { bottom:156px; width:92vw; gap:9px; }
   .tagline-text { font-size:12px; line-height:1.72; } .tagline-line { width:26px; }
-  #announcementBtn { top:20px; right:14px; font-size:8.5px; padding:7px 11px; gap:5px; letter-spacing:0.05em; }
-  #announcementBtn .btn-dot { width:5px; height:5px; }
+  
+  
   #musicFixed { bottom:42px; } #musicPill { gap:11px; padding:9px 14px 9px 11px; }
   #innerBtn { width:32px; height:32px; } #pillSong { max-width:110px; font-size:11px; }
   #pillLabel { font-size:8.5px; } #barsIcon { height:15px; }
@@ -335,8 +477,8 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
 @media (max-width:360px) {
   .name { font-size:54px; } .content { padding:20px 16px; }
   .socials { gap:12px; margin-left:4px; } .socials svg { width:18px; height:18px; }
-  #announcementBtn { top:16px; right:12px; font-size:8px; padding:6px 10px; gap:5px; }
-  #announcementBtn .btn-label { display:none; }
+  
+  
   .tagline-section { bottom:150px; width:94vw; } .tagline-text { font-size:11px; line-height:1.68; }
   .tagline-line { width:22px; } #musicFixed { bottom:38px; }
   #musicPill { gap:10px; padding:8px 12px 8px 10px; } #innerBtn { width:30px; height:30px; }
@@ -351,7 +493,7 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
     padding-right:max(clamp(18px,5vw,52px), env(safe-area-inset-right));
     padding-top:max(clamp(24px,5vw,52px), env(safe-area-inset-top));
   }
-  #announcementBtn {
+  /* removed */
     top:max(clamp(20px,5vw,52px), env(safe-area-inset-top));
     right:max(clamp(12px,3vw,40px), env(safe-area-inset-right));
   }
@@ -379,7 +521,7 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
         <span class="letter" style="--i:4">U</span>
       </h1>
       <div class="socials">
-        <a href="https://instagram.com/iamdifferentball" target="_blank" rel="noopener" title="Instagram">
+        <a href="https://instagram.com/expensive.blood" target="_blank" rel="noopener" title="Instagram">
           <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         </a>
         <a href="https://x.com/expensiveblood9" target="_blank" rel="noopener" title="Twitter / X">
@@ -404,7 +546,7 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
 
 <!-- Copyright -->
 <div class="copyright-fixed">
-  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;&middot;&nbsp; v1.9.9</span>
+  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;&middot;&nbsp; v2.0</span>
 </div>
 
 <!-- Ticker -->
@@ -438,27 +580,111 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
   </div>
 </div>
 
-<!-- Announcement Button -->
-<button id="announcementBtn" onclick="openAnnouncement()">
-  <span class="btn-dot"></span>
-  <span class="btn-label">Latest Announcement</span>
+<!-- Menu Circle Button -->
+<button id="menuBtn" onclick="toggleMenu()" aria-label="Open menu">
+  <span class="menu-line"></span>
+  <span class="menu-line"></span>
 </button>
 
-<!-- Announcement Modal -->
-<div id="announcementModal" role="dialog" aria-modal="true">
-  <div id="modalBackdrop" onclick="closeAnnouncement()"></div>
-  <div id="modalCard">
-    <button id="modalClose" onclick="closeAnnouncement()">&#10005;</button>
-    <div id="modalTag">&#128226; Official</div>
-    <div id="modalTitle">Official Announcement</div>
-    <div id="modalBody">
+<!-- Menu Backdrop -->
+<div id="menuBackdrop" onclick="closeMenu()"></div>
+
+<!-- Dropdown Panel -->
+<div id="menuPanel">
+  <div class="menu-pill">
+    <div class="menu-item" onclick="openModal('updatesModal')">
+      <span class="menu-item-label">Latest Updates</span>
+      <div class="menu-live-dot"></div>
+    </div>
+    <div class="menu-item" onclick="openModal('aboutModal')">
+      <span class="menu-item-label">About</span>
+      <span class="menu-item-arrow">&#8250;</span>
+    </div>
+    <div class="menu-item" onclick="openModal('herModal')">
+      <span class="menu-item-label">Her</span>
+      <span class="menu-item-arrow">&#8250;</span>
+    </div>
+    <div class="menu-sep"></div>
+    <div class="menu-item" onclick="openModal('contactModal')">
+      <span class="menu-item-label">Contact</span>
+      <span class="menu-item-arrow">&#8250;</span>
+    </div>
+  </div>
+</div>
+
+<!-- Latest Updates Modal -->
+<div id="updatesModal" class="modal-wrap" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" onclick="closeModal('updatesModal')"></div>
+  <div class="modal-card">
+    <button class="modal-close-btn" onclick="closeModal('updatesModal')">&#10005;</button>
+    <div class="modal-tag">&#128226; Official</div>
+    <div class="modal-title">Official Announcement</div>
+    <div class="modal-body">
       <p>This website was officially launched on March 9, 2026. The complete design and development were carried out by Chidu's Team. The interface, UI design, and UX experience were carefully planned to provide a clean, modern, and minimal digital environment for visitors. Every section has been structured with attention to detail to ensure smooth navigation, clarity, and a visually balanced layout.</p>
-      <div class="modal-divider"></div>
+      <div class="modal-divider-line"></div>
       <p>&#128679;&nbsp; This website is currently still a work in progress. New sections, features, and content are being carefully crafted and will be revealed soon. Stay tuned &#8212; something exciting is on its way.</p>
-      <div class="modal-divider"></div>
+      <div class="modal-divider-line"></div>
       <p>&#128233;&nbsp; For any queries or just to say hello &#8212; feel free to reach out directly via email. We&#8217;d love to hear from you.</p>
     </div>
-    <div id="modalDate">&#8212; Team Chidu</div>
+    <div class="modal-date">&#8212; Team Chidu</div>
+  </div>
+</div>
+
+<!-- About Modal -->
+<div id="aboutModal" class="modal-wrap" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" onclick="closeModal('aboutModal')"></div>
+  <div class="modal-card">
+    <button class="modal-close-btn" onclick="closeModal('aboutModal')">&#10005;</button>
+    <div class="modal-tag">&#128100; About</div>
+    <div class="modal-title">Who is Chidu?</div>
+    <div class="modal-body">
+      <p>Hey &#8212; I&#8217;m Chidu. This is my personal space on the internet, built exactly the way I think: clean, intentional, and different.</p>
+      <p>I move differently. I think differently. I exist differently. If you&#8217;re here, you already know that &#8212; or you&#8217;re about to find out.</p>
+      <p>This website is still being built. More about me, my story, and what I&#8217;m working on will be added soon. Stay tuned.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Her Modal -->
+<div id="herModal" class="modal-wrap" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" onclick="closeModal('herModal')"></div>
+  <div class="modal-card her-card">
+    <button class="modal-close-btn" onclick="closeModal('herModal')">&#10005;</button>
+    <div class="modal-tag">Her</div>
+    <div class="her-inner">
+      <div class="her-photo-wrap">
+        <img src="images/amruta.jpg" alt="Chidu and Amruta" class="her-photo">
+      </div>
+      <div class="her-text">
+        <div class="her-caption">Not everyone gets a bond like this.</div>
+        <div class="her-divider"></div>
+        <div class="modal-body" style="max-height:none; overflow:visible; padding-right:0;">
+          <p>She came after me &#8212; younger, but never less. Amruta is the kind of person who doesn&#8217;t need to say much to mean everything. We don&#8217;t always speak the same language, but we always understand each other.</p>
+          <p>Some bonds aren&#8217;t built. They&#8217;re born. This is one of them.</p>
+        </div>
+        <div class="modal-date" style="margin-top:16px;">Chidu &nbsp;&amp;&nbsp; Amruta</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contact Modal -->
+<div id="contactModal" class="modal-wrap" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" onclick="closeModal('contactModal')"></div>
+  <div class="modal-card">
+    <button class="modal-close-btn" onclick="closeModal('contactModal')">&#10005;</button>
+    <div class="modal-tag">&#128172; Contact</div>
+    <div class="modal-title">Always free to talk.</div>
+    <div class="modal-body">
+      <p>Feel free to reach out anytime. Whether it&#8217;s something big or just a simple hello &#8212; I&#8217;m always here. Don&#8217;t hesitate.</p>
+    </div>
+    <div style="margin-top:24px;">
+      <button id="contactEmailBtn" style="display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,0.3);transition:background 0.2s ease;">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:rgba(255,255,255,0.8);"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Send a message
+      </button>
+    </div>
+    <div class="modal-date" style="margin-top:16px;">&#8212; Chidu</div>
   </div>
 </div>
 
@@ -471,11 +697,12 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
 <script>
 (function() {
 
-  /* ── EMAIL: built at runtime so Cloudflare can never obfuscate it ── */
-  var eLink = document.getElementById('emailLink');
+  /* ── EMAIL ── */
   var eAddr = 'expensiveblood2007' + '@' + 'gmail.com';
-  eLink.href = 'mailto:' + eAddr;
-  eLink.onclick = null;
+  var eLink = document.getElementById('emailLink');
+  if (eLink) { eLink.href = 'mailto:' + eAddr; eLink.onclick = null; }
+  var cBtn = document.getElementById('contactEmailBtn');
+  if (cBtn) { cBtn.onclick = function() { window.location.href = 'mailto:' + eAddr; }; }
 
   /* ── BG UNBLUR ── */
   var bg = document.querySelector('.bg');
@@ -484,21 +711,16 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
       requestAnimationFrame(function() { bg.classList.add('loaded'); });
     });
   }
-  if (bg.complete && bg.naturalWidth > 0) {
-    startBgAnim();
-  } else {
+  if (bg.complete && bg.naturalWidth > 0) { startBgAnim(); }
+  else {
     bg.addEventListener('load', startBgAnim);
-    bg.addEventListener('error', function() {
-      bg.style.filter = 'brightness(0.5)';
-      bg.style.transform = 'scale(1)';
-    });
+    bg.addEventListener('error', function() { bg.style.filter='brightness(0.5)'; bg.style.transform='scale(1)'; });
   }
 
   /* ── MUSIC ── */
   var audio = document.getElementById('bgMusic');
   var isPlaying = false;
   audio.volume = 0.55;
-
   function showPlay() {
     document.getElementById('playIcon').style.display = 'block';
     document.getElementById('barsIcon').style.display = 'none';
@@ -511,18 +733,14 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
     document.getElementById('musicPill').classList.add('playing');
     document.getElementById('pillLabel').textContent = 'Now playing';
   }
-
   window.toggleMusic = function() {
-    if (isPlaying) {
-      audio.pause(); isPlaying = false; showPlay();
-    } else {
+    if (isPlaying) { audio.pause(); isPlaying = false; showPlay(); }
+    else {
       var p = audio.play();
       if (p !== undefined) {
         p.then(function() { isPlaying = true; showBars(); })
          .catch(function() { isPlaying = false; showPlay(); });
-      } else {
-        isPlaying = true; showBars();
-      }
+      } else { isPlaying = true; showBars(); }
     }
   };
 
@@ -546,21 +764,45 @@ body { width:100%; min-height:100vh; background:#2a2018; font-family:'Inter',san
     });
   }
 
-  /* ── MODAL ── */
-  window.openAnnouncement = function() {
-    var modal = document.getElementById('announcementModal');
-    modal.style.visibility = 'visible';
+  /* ── MENU ── */
+  var menuOpen = false;
+  window.toggleMenu = function() { menuOpen ? closeMenu() : openMenu(); };
+  function openMenu() {
+    menuOpen = true;
+    document.getElementById('menuBtn').classList.add('open');
+    document.getElementById('menuBackdrop').classList.add('open');
+    document.getElementById('menuPanel').classList.add('open');
+  }
+  window.closeMenu = function() {
+    menuOpen = false;
+    document.getElementById('menuBtn').classList.remove('open');
+    document.getElementById('menuBackdrop').classList.remove('open');
+    document.getElementById('menuPanel').classList.remove('open');
+  };
+
+  /* ── MODALS ── */
+  window.openModal = function(id) {
+    closeMenu();
+    var m = document.getElementById(id);
+    if (!m) return;
+    m.style.visibility = 'visible';
     requestAnimationFrame(function() {
-      requestAnimationFrame(function() { modal.classList.add('open'); });
+      requestAnimationFrame(function() { m.classList.add('open'); });
     });
   };
-  window.closeAnnouncement = function() {
-    var modal = document.getElementById('announcementModal');
-    modal.classList.remove('open');
-    setTimeout(function() { modal.style.visibility = 'hidden'; }, 400);
+  window.closeModal = function(id) {
+    var m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('open');
+    setTimeout(function() { m.style.visibility = 'hidden'; }, 400);
   };
+
+  /* ── ESC KEY ── */
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') window.closeAnnouncement();
+    if (e.key === 'Escape') {
+      closeMenu();
+      ['updatesModal','aboutModal','herModal','contactModal'].forEach(function(id) { window.closeModal(id); });
+    }
   });
 
   /* ── PAUSE ANIMATIONS ON HIDDEN TAB ── */
