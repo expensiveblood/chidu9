@@ -17,13 +17,17 @@ html { scroll-behavior:smooth; background:#2a2018; }
 body {
   width:100%; min-height:100vh; background:#2a2018;
   font-family:'Inter',sans-serif; overscroll-behavior:none;
-  /* Disable text selection / copy on entire site */
   -webkit-user-select:none;
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none;
-  /* Disable callout on iOS (no copy menu on long press) */
   -webkit-touch-callout:none;
+}
+/* Remove blue tap highlight on ALL elements */
+* {
+  -webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;
+  outline:none;
 }
 
 /* ── BACKGROUND ── */
@@ -543,7 +547,7 @@ body {
 
 <!-- Copyright -->
 <div class="copyright-fixed">
-  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;&middot;&nbsp; v3.0</span>
+  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;&middot;&nbsp; v3.3.3</span>
 </div>
 
 
