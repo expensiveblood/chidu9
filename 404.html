@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>404 — Chidu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +16,11 @@ html, body {
   background:#2a2018;
   font-family:'Inter', sans-serif;
   overscroll-behavior:none;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
 }
 
 /* ── BACKGROUND ── */
@@ -211,7 +216,7 @@ html, body {
 /* ── COPYRIGHT ── */
 .copyright-fixed {
   position:fixed;
-  bottom:clamp(16px,3vw,28px);
+  bottom:clamp(12px,2.5vw,24px);
   left:0; right:0;
   z-index:10; pointer-events:none;
   display:flex; justify-content:center; align-items:center;
@@ -220,9 +225,9 @@ html, body {
 }
 .copyright {
   font-family:'Inter', sans-serif;
-  font-size:clamp(7.5px,2vw,11px);
-  font-weight:400; letter-spacing:0.05em; text-transform:uppercase;
-  color:rgba(255,255,255,0.35);
+  font-size:clamp(7px,1.6vw,10px);
+  font-weight:300; letter-spacing:0.08em; text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
   white-space:nowrap; text-align:center;
 }
 
@@ -283,17 +288,13 @@ html, body {
       Go Home
       <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
     </a>
-    <a href="javascript:history.back()" class="btn btn-secondary">
-      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="11 18 5 12 11 6"/></svg>
-      Go Back
-    </a>
   </div>
 
 </div>
 
 <!-- Copyright -->
 <div class="copyright-fixed">
-  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;&middot;&nbsp; v1.9.9</span>
+  <span class="copyright">&copy; 2026 Chidu. All rights reserved &nbsp;&middot;&nbsp; v3.0</span>
 </div>
 
 </body>
