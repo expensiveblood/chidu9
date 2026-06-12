@@ -123,149 +123,31 @@ body {
 .socials a:hover { color:#fff; transform:scale(1.15); }
 .socials svg { width:clamp(20px,3.2vw,26px); height:clamp(20px,3.2vw,26px); fill:currentColor; }
 
-/* ── MENU CIRCLE BUTTON ── */
-#menuBtn {
-  position:fixed; top:clamp(28px,5vw,52px); right:clamp(14px,3vw,40px);
-  z-index:100001;
-  width:clamp(40px,5vw,52px); height:clamp(40px,5vw,52px);
-  border-radius:50%;
-  background:rgba(42,32,24,0.82);
-  backdrop-filter:blur(50px) saturate(180%) brightness(1.1);
-  -webkit-backdrop-filter:blur(50px) saturate(180%) brightness(1.1);
-  border:1px solid rgba(255,255,255,0.15);
-  box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.1), 0 8px 32px rgba(0,0,0,0.3);
-  cursor:pointer;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
-  transition:background 0.25s ease, transform 0.22s ease;
-  animation:fadeSlideDown 0.6s cubic-bezier(0.22,1,0.36,1) 2.2s both;
-}
-#menuBtn:hover { background:rgba(52,40,28,0.9); transform:scale(1.06); }
-#menuBtn.open { background:rgba(52,40,28,0.9); }
-@keyframes fadeSlideDown {
-  0%   { opacity:0; transform:translateY(-14px) scale(0.9); filter:blur(2px); }
-  100% { opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
-}
-.menu-line {
-  width:clamp(14px,2vw,18px); height:1.5px;
-  background:rgba(255,255,255,0.9); border-radius:2px;
-  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1), width 0.3s ease;
-}
-.menu-line:nth-child(2) { width:clamp(10px,1.5vw,13px); }
-#menuBtn.open .menu-line:nth-child(1) { transform:translateY(3.75px) rotate(45deg); width:clamp(14px,2vw,18px); }
-#menuBtn.open .menu-line:nth-child(2) { transform:translateY(-3.75px) rotate(-45deg); width:clamp(14px,2vw,18px); }
-
-/* ── MENU BACKDROP ── */
-#menuBackdrop {
-  position:fixed; inset:0; z-index:100000;
-  background:rgba(0,0,0,0.3);
-  backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
-  opacity:0; visibility:hidden;
-  transition:opacity 0.3s ease, visibility 0.3s ease; cursor:pointer;
-}
-#menuBackdrop.open { opacity:1; visibility:visible; }
-
-/* ── DROPDOWN PANEL ── */
-#menuPanel {
+/* ── NAV LINKS ── */
+.nav-links {
   position:fixed;
-  top:calc(clamp(28px,5vw,52px) + 58px); right:clamp(14px,3vw,40px);
-  z-index:100001;
-  transform:translateY(-8px) scale(0.97); opacity:0; visibility:hidden;
-  transition:transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease, visibility 0.3s ease;
-  transform-origin:top right;
+  top:clamp(22px,4vw,44px);
+  right:clamp(18px,4vw,52px);
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  gap:clamp(18px,3vw,36px);
+  animation:fadeIn 0.8s ease 0.5s both;
 }
-#menuPanel.open { transform:translateY(0) scale(1); opacity:1; visibility:visible; }
+.nav-links a {
+  font-family:'Inter',sans-serif;
+  font-size:clamp(9px,1vw,11px);
+  font-weight:600;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.85);
+  text-decoration:none;
+  transition:color 0.2s ease;
+}
+.nav-links a:hover { color:#fff; }
 
-.menu-pill {
-  background:rgba(16,12,8,0.75);
-  backdrop-filter:blur(40px) saturate(160%); -webkit-backdrop-filter:blur(40px) saturate(160%);
-  border:1px solid rgba(255,255,255,0.12); border-radius:18px; padding:6px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-  display:flex; flex-direction:column; gap:2px; min-width:190px;
-}
-.menu-item {
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  padding:12px 16px; border-radius:12px; cursor:pointer;
-  background:rgba(255,255,255,0); transition:background 0.2s ease;
-  opacity:0; transform:translateY(6px); text-decoration:none;
-}
-#menuPanel.open .menu-item:nth-child(1) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.07s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.07s; }
-#menuPanel.open .menu-item:nth-child(2) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.13s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.13s; }
-#menuPanel.open .menu-item:nth-child(3) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.19s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.19s; }
-#menuPanel.open .menu-item:nth-child(4) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.25s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.25s; }
-#menuPanel.open .menu-item:nth-child(5) { opacity:1; transform:translateY(0); transition:background 0.2s ease, opacity 0.3s ease 0.31s, transform 0.35s cubic-bezier(0.22,1,0.36,1) 0.31s; }
-.menu-item:hover { background:rgba(255,255,255,0.08); }
-.menu-item-label { font-family:'Inter',sans-serif; font-size:12px; font-weight:600; color:rgba(255,255,255,0.88); letter-spacing:0.02em; }
-.menu-item-arrow { font-size:10px; color:rgba(255,255,255,0.3); transition:color 0.2s, transform 0.2s; }
-.menu-item:hover .menu-item-arrow { color:rgba(255,255,255,0.7); transform:translateX(2px); }
-.menu-live-dot {
-  width:5px; height:5px; border-radius:50%; background:#fff; flex-shrink:0;
-  box-shadow:0 0 6px rgba(255,255,255,0.8); animation:dotPulse 2.2s ease-in-out infinite;
-}
-@keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.6);} }
-.menu-sep { height:1px; background:rgba(255,255,255,0.18); margin:3px 8px; opacity:0; transition:opacity 0.3s ease 0.2s; }
-#menuPanel.open .menu-sep { opacity:1; }
-
-/* ── SHARED MODAL STYLES ── */
-.modal-wrap {
-  position:fixed; inset:0; z-index:200000;
-  display:flex; align-items:center; justify-content:center; padding:24px;
-  pointer-events:none; opacity:0; visibility:hidden;
-  transition:opacity 0.25s ease, visibility 0.25s ease;
-}
-.modal-wrap.open { pointer-events:all; opacity:1; visibility:visible; }
-.modal-backdrop {
-  position:absolute; inset:0; background:rgba(0,0,0,0.5);
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); cursor:pointer;
-}
-.modal-card {
-  position:relative; z-index:1; background:rgba(22,18,12,0.65);
-  backdrop-filter:blur(32px) saturate(160%) brightness(1.05);
-  -webkit-backdrop-filter:blur(32px) saturate(160%) brightness(1.05);
-  border:1px solid rgba(255,255,255,0.14); border-radius:24px;
-  padding:clamp(28px,5vw,48px); max-width:580px; width:100%;
-  box-shadow:0 32px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.14);
-  transform:scale(0.94) translateY(12px); opacity:0;
-  transition:transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
-}
-.modal-wrap.open .modal-card { transform:scale(1) translateY(0); opacity:1; }
-.modal-close-btn {
-  position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%;
-  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
-  color:rgba(255,255,255,0.7); font-size:14px;
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; transition:background 0.2s, color 0.2s, transform 0.2s; line-height:1;
-}
-.modal-close-btn:hover { background:rgba(255,255,255,0.16); color:#fff; transform:scale(1.08) rotate(90deg); }
-.modal-tag { font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:10px; }
-.modal-title { font-size:clamp(20px,3.5vw,28px); font-weight:700; color:#fff; letter-spacing:-0.01em; margin-bottom:20px; line-height:1.1; }
-.modal-body {
-  font-size:clamp(13px,1.3vw,14.5px); font-weight:400; line-height:1.85;
-  color:rgba(255,255,255,0.72); letter-spacing:0.005em;
-  max-height:50vh; overflow-y:auto; padding-right:8px;
-  scrollbar-width:thin; scrollbar-color:rgba(255,255,255,0.15) transparent;
-}
-.modal-body::-webkit-scrollbar { width:3px; }
-.modal-body::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:999px; }
-.modal-body p { margin-bottom:16px; }
-.modal-body p:last-child { margin-bottom:0; }
-.modal-divider-line { width:100%; height:1px; background:rgba(255,255,255,0.08); margin:16px 0; }
-.modal-date { margin-top:22px; font-size:10px; font-weight:500; color:rgba(255,255,255,0.3); letter-spacing:0.08em; text-transform:uppercase; }
-
-/* Responsive modal adjustments */
-@media (max-width:480px) {
-  .modal-card { padding:24px 18px !important; border-radius:18px; max-width:100%; margin:0 8px; }
-  .modal-title { font-size:20px; margin-bottom:16px; }
-  .modal-body { font-size:13px; max-height:48vh; }
-  .modal-close-btn { width:28px; height:28px; font-size:12px; top:12px; right:12px; }
-}
-
-/* safe area for menu */
+/* safe area for content */
 @supports (padding: max(0px)) {
-  #menuBtn {
-    top:max(clamp(28px,5vw,52px), env(safe-area-inset-top));
-    right:max(clamp(14px,3vw,40px), env(safe-area-inset-right));
-  }
-}
 
 
 
@@ -279,7 +161,6 @@ body {
 /* ── RESPONSIVE ── */
 @media (min-width:1600px) {
   .content { padding:60px 64px; } .name { font-size:200px; }
-  #menuBtn { top:60px; right:60px; }
 } }
 }
 @media (max-width:1024px) and (min-width:769px) {
@@ -375,86 +256,12 @@ width:94vw; }  line-height:1.68; }
 
 
 
-<!-- Menu Circle Button -->
-<button id="menuBtn" onclick="toggleMenu()" aria-label="Open menu">
-  <span class="menu-line"></span>
-  <span class="menu-line"></span>
-</button>
-
-<!-- Menu Backdrop -->
-<div id="menuBackdrop" onclick="closeMenu()"></div>
-
-<!-- Dropdown Panel -->
-<div id="menuPanel">
-  <div class="menu-pill">
-    <div class="menu-item" onclick="openModal('updatesModal')">
-      <span class="menu-item-label">Latest Updates</span>
-      <div class="menu-live-dot"></div>
-    </div>
-    <div class="menu-item" onclick="openModal('aboutModal')">
-      <span class="menu-item-label">About</span>
-      <span class="menu-item-arrow">&#8250;</span>
-    </div>
-    <div class="menu-sep"></div>
-    <div class="menu-item" onclick="openModal('contactModal')">
-      <span class="menu-item-label">Contact</span>
-      <span class="menu-item-arrow">&#8250;</span>
-    </div>
-  </div>
-</div>
-
-<!-- Latest Updates Modal -->
-<div id="updatesModal" class="modal-wrap" role="dialog" aria-modal="true">
-  <div class="modal-backdrop" onclick="closeModal('updatesModal')"></div>
-  <div class="modal-card">
-    <button class="modal-close-btn" onclick="closeModal('updatesModal')">&#10005;</button>
-    <div class="modal-tag">&#128226; Official</div>
-    <div class="modal-title">Official Announcement</div>
-    <div class="modal-body">
-      <p>This website was officially launched on March 9, 2026. The complete design and development were carried out by Chidu's Team. The interface, UI design, and UX experience were carefully planned to provide a clean, modern, and minimal digital environment for visitors. Every section has been structured with attention to detail to ensure smooth navigation, clarity, and a visually balanced layout. This website's design is inspired by the official website of Formula 1 driver Lewis Hamilton and follows a simple, minimal style focused on content and user experience.</p>
-      <div class="modal-divider-line"></div>
-      <p>&#128679;&nbsp; This website is currently still a work in progress. New sections, features, and content are being carefully crafted and will be revealed soon. Stay tuned &#8212; something exciting is on its way.</p>
-      <div class="modal-divider-line"></div>
-      <p>&#128233;&nbsp; For any queries or just to say hello &#8212; feel free to reach out directly via email. We&#8217;d love to hear from you.</p>
-    </div>
-    <div class="modal-date">&#8212; Team Chidu</div>
-  </div>
-</div>
-
-<!-- About Modal -->
-<div id="aboutModal" class="modal-wrap" role="dialog" aria-modal="true">
-  <div class="modal-backdrop" onclick="closeModal('aboutModal')"></div>
-  <div class="modal-card">
-    <button class="modal-close-btn" onclick="closeModal('aboutModal')">&#10005;</button>
-    <div class="modal-tag">&#128100; About</div>
-    <div class="modal-title">Who is Chidu?</div>
-    <div class="modal-body">
-      <p>Hey &#8212; I&#8217;m Chidu. This is my personal space on the internet, built exactly the way I think: clean, intentional, and different.</p>
-      <p>I move differently. I think differently. I exist differently. If you&#8217;re here, you already know that &#8212; or you&#8217;re about to find out.</p>
-      <p>This website is still being built. More about me, my story, and what I&#8217;m working on will be added soon. Stay tuned.</p>
-    </div>
-  </div>
-</div>
-
-<!-- Contact Modal -->
-<div id="contactModal" class="modal-wrap" role="dialog" aria-modal="true">
-  <div class="modal-backdrop" onclick="closeModal('contactModal')"></div>
-  <div class="modal-card">
-    <button class="modal-close-btn" onclick="closeModal('contactModal')">&#10005;</button>
-    <div class="modal-tag">&#128172; Contact</div>
-    <div class="modal-title">Always free to talk.</div>
-    <div class="modal-body">
-      <p>Feel free to reach out anytime. Whether it&#8217;s something big or just a simple hello &#8212; I&#8217;m always here. Don&#8217;t hesitate.</p>
-    </div>
-    <div style="margin-top:24px;">
-      <button id="contactEmailBtn" style="display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,0.3);transition:background 0.2s ease;">
-        <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:rgba(255,255,255,0.8);"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        Send a message
-      </button>
-    </div>
-    <div class="modal-date" style="margin-top:16px;">&#8212; Chidu</div>
-  </div>
-</div>
+<!-- Nav Links -->
+<nav class="nav-links">
+  <a href="about.html">About</a>
+  <a href="updates.html">Updates</a>
+  <a href="contact.html">Contact</a>
+</nav>
 
 
 
@@ -465,8 +272,6 @@ width:94vw; }  line-height:1.68; }
   var eAddr = 'expensiveblood2007' + '@' + 'gmail.com';
   var eLink = document.getElementById('emailLink');
   if (eLink) { eLink.href = 'mailto:' + eAddr; eLink.onclick = null; }
-  var cBtn = document.getElementById('contactEmailBtn');
-  if (cBtn) { cBtn.onclick = function() { window.location.href = 'mailto:' + eAddr; }; }
 
   /* ── BG UNBLUR ── */
   var bg = document.querySelector('.bg');
@@ -481,52 +286,10 @@ width:94vw; }  line-height:1.68; }
     bg.addEventListener('error', function() { bg.style.filter='brightness(0.5)'; bg.style.transform='scale(1)'; });
   }
 
-  /* ── MENU ── */
-  var menuOpen = false;
-  window.toggleMenu = function() { menuOpen ? closeMenu() : openMenu(); };
-  function openMenu() {
-    menuOpen = true;
-    document.getElementById('menuBtn').classList.add('open');
-    document.getElementById('menuBackdrop').classList.add('open');
-    document.getElementById('menuPanel').classList.add('open');
-  }
-  window.closeMenu = function() {
-    menuOpen = false;
-    document.getElementById('menuBtn').classList.remove('open');
-    document.getElementById('menuBackdrop').classList.remove('open');
-    document.getElementById('menuPanel').classList.remove('open');
-  };
-
-  /* ── MODALS ── */
-  window.openModal = function(id) {
-    closeMenu();
-    var m = document.getElementById(id);
-    if (!m) return;
-    m.style.visibility = 'visible';
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() { m.classList.add('open'); });
-    });
-  };
-  window.closeModal = function(id) {
-    var m = document.getElementById(id);
-    if (!m) return;
-    m.classList.remove('open');
-    setTimeout(function() { m.style.visibility = 'hidden'; }, 400);
-  };
-
-  /* ── ESC KEY ── */
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      closeMenu();
-      ['updatesModal','aboutModal','contactModal'].forEach(function(id) { window.closeModal(id); });
-    }
-  });
-
-  /* ── PAUSE ANIMATIONS ON HIDDEN TAB ── */
+  /* ── PAUSE GRAIN ON HIDDEN TAB ── */
   document.addEventListener('visibilitychange', function() {
-    var state = document.hidden ? 'paused' : 'running';
-    var grain  = document.querySelector('.grain');
-    if (grain) grain.style.animationPlayState = state;
+    var grain = document.querySelector('.grain');
+    if (grain) grain.style.animationPlayState = document.hidden ? 'paused' : 'running';
   });
 
 })();
