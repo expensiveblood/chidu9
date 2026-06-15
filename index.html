@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!-- Disable Cloudflare email obfuscation for this page -->
-<!-- email-decode: off -->
 <title>Chidu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,24 +14,15 @@
 <link rel="manifest" href="site.webmanifest">
 <style>
 
-/* ── RESET ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; background:#2a2018; }
+html { scroll-behavior:smooth; background:#2a2018; touch-action:pan-x pan-y; }
 body {
   width:100%; min-height:100vh; background:#2a2018;
   font-family:'Inter',sans-serif; overscroll-behavior:none;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none;
-  -webkit-touch-callout:none;
+  -webkit-user-select:none; -moz-user-select:none;
+  -ms-user-select:none; user-select:none; -webkit-touch-callout:none;
 }
-/* Remove blue tap highlight on ALL elements */
-* {
-  -webkit-tap-highlight-color:transparent;
-  -webkit-touch-callout:none;
-  outline:none;
-}
+* { -webkit-tap-highlight-color:transparent; -webkit-touch-callout:none; outline:none; }
 
 /* ── BACKGROUND ── */
 .bg {
@@ -47,9 +36,6 @@ body {
   from { filter:brightness(0.78) blur(22px); transform:scale(1.07); }
   to   { filter:brightness(0.78) blur(0px); transform:scale(1); }
 }
-@media (min-width:768px)  { .bg { object-position:50% 25%; } }
-@media (min-width:1024px) { .bg { object-position:50% 30%; } }
-@media (min-width:1440px) { .bg { object-position:50% 35%; } }
 
 /* ── GRAIN ── */
 .grain {
@@ -69,7 +55,7 @@ body {
   background:linear-gradient(to bottom,rgba(0,0,0,0.18) 0%,transparent 30%,transparent 50%,rgba(0,0,0,0.65) 100%);
 }
 
-/* ── CONTENT ── */
+/* ── CONTENT: top and bottom ── */
 .content {
   position:relative; z-index:3;
   display:flex; flex-direction:column; justify-content:space-between;
@@ -82,7 +68,7 @@ body {
   to   { opacity:1; transform:translateY(0); }
 }
 
-/* ── TOP ── */
+/* ── TOP: name + socials ── */
 .top { display:flex; flex-direction:column; gap:clamp(8px,1.5vw,16px); }
 
 /* ── NAME ── */
@@ -103,17 +89,10 @@ body {
   animation-delay:calc(0.07s * var(--i) + 0.6s);
 }
 
-/* ── BIO ── */
-.bio {
-  font-size:clamp(11px,1.2vw,13px); font-weight:300;
-  line-height:1.75; color:rgba(255,255,255,0.7);
-  max-width:clamp(240px,38vw,420px); letter-spacing:0.01em;
-}
-
 /* ── SOCIALS ── */
 .socials {
   display:flex; align-items:center;
-  gap:clamp(16px,3vw,28px); margin-top:clamp(4px,1vw,8px); margin-left:14px;
+  gap:clamp(16px,3vw,28px);
 }
 .socials a {
   color:rgba(255,255,255,0.85); text-decoration:none;
@@ -123,91 +102,50 @@ body {
 .socials a:hover { color:#fff; transform:scale(1.15); }
 .socials svg { width:clamp(20px,3.2vw,26px); height:clamp(20px,3.2vw,26px); fill:currentColor; }
 
-/* ── NAV LINKS ── */
-.nav-links {
-  position:fixed;
-  top:clamp(22px,4vw,44px);
-  right:clamp(18px,4vw,52px);
-  z-index:1000;
+/* ── BOTTOM: nav links only ── */
+.bottom {
   display:flex;
   align-items:center;
-  gap:clamp(18px,3vw,36px);
-  animation:fadeIn 0.8s ease 0.5s both;
+  flex-wrap:wrap;
+  gap:clamp(16px,3vw,32px);
 }
-.nav-links a {
+.bottom a {
   font-family:'Inter',sans-serif;
   font-size:clamp(9px,1vw,11px);
   font-weight:600;
   letter-spacing:0.12em;
   text-transform:uppercase;
-  color:rgba(255,255,255,0.85);
-  text-decoration:none;
+  color:rgba(255,255,255,0.7);
+  text-decoration:underline;
+  text-underline-offset:3px;
+  text-decoration-color:rgba(255,255,255,0.3);
   transition:color 0.2s ease;
 }
-.nav-links a:hover { color:#fff; }
-
-/* safe area for content */
-@supports (padding: max(0px)) {
-
-
-
-
-
-
-
-
-@media (prefers-reduced-motion:reduce) { .grain { animation:none; } }
+.bottom a:hover { color:#fff; text-decoration-color:rgba(255,255,255,0.7); }
 
 /* ── RESPONSIVE ── */
-@media (min-width:1600px) {
-  .content { padding:60px 64px; } .name { font-size:200px; }
-} }
-}
-@media (max-width:1024px) and (min-width:769px) {
-  .name { font-size:clamp(80px,14vw,130px); }
-width:80vw; }  }
-  }
-}
+@media (min-width:1600px) { .content { padding:60px 64px; } .name { font-size:200px; } }
+@media (max-width:1024px) and (min-width:769px) { .name { font-size:clamp(80px,14vw,130px); } }
 @media (max-width:768px) {
   .name { font-size:clamp(68px,16vw,110px); } .content { padding:32px 28px; }
-  .socials { gap:18px; margin-left:8px; } .socials svg { width:22px; height:22px; }
-  .bio { max-width:100%; font-size:12px; }
-width:88vw; gap:12px; }
-line-height:1.8; }  }
-  
-  }
+  .socials { gap:18px; } .socials svg { width:22px; height:22px; }
 }
-@media (max-width:600px) {
-  .name { font-size:clamp(62px,17vw,90px); } .content { padding:28px 22px; }
-width:90vw; gap:10px; }
-line-height:1.75; }
-  
-  }
-}
+@media (max-width:600px) { .name { font-size:clamp(62px,17vw,90px); } .content { padding:28px 22px; } }
 @media (max-width:480px) {
   .name { font-size:clamp(58px,17.5vw,78px); } .content { padding:24px 18px; }
-  .top { gap:10px; } .socials { gap:14px; margin-left:6px; } .socials svg { width:20px; height:20px; }
-  .bio { max-width:100%; font-size:11.5px; }
-width:92vw; gap:9px; }
-line-height:1.72; }  }
-  
-  
-  }
+  .socials { gap:14px; } .socials svg { width:20px; height:20px; }
 }
 @media (max-width:360px) {
   .name { font-size:54px; } .content { padding:20px 16px; }
-  .socials { gap:12px; margin-left:4px; } .socials svg { width:18px; height:18px; }
-  
-  
-width:94vw; }  line-height:1.68; }
+  .socials { gap:12px; } .socials svg { width:18px; height:18px; }
 }
-}
+@media (prefers-reduced-motion:reduce) { .grain { animation:none; } }
 @supports (padding: max(0px)) {
   .content {
     padding-left:max(clamp(18px,5vw,52px), env(safe-area-inset-left));
     padding-right:max(clamp(18px,5vw,52px), env(safe-area-inset-right));
     padding-top:max(clamp(24px,5vw,52px), env(safe-area-inset-top));
-  }
+    padding-bottom:max(clamp(28px,5vw,52px), env(safe-area-inset-bottom));
   }
 }
 
@@ -215,65 +153,54 @@ width:94vw; }  line-height:1.68; }
 </head>
 <body>
 
-<div style="position:relative; height:100vh; overflow:hidden;">
-  <img class="bg" src="images/chidu.jpg" alt="Chidu" loading="eager">
-  <div class="grain"></div>
-  <div class="overlay"></div>
-  <div class="content">
-    <div class="top">
-      <h1 class="name">
-        <span class="letter" style="--i:0">C</span>
-        <span class="letter" style="--i:1">H</span>
-        <span class="letter" style="--i:2">I</span>
-        <span class="letter" style="--i:3">D</span>
-        <span class="letter" style="--i:4">U</span>
-      </h1>
-      <div class="socials">
-        <a href="https://instagram.com/iamdifferentball" target="_blank" rel="noopener" title="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </a>
-        <a href="https://x.com/expensiveblood9" target="_blank" rel="noopener" title="Twitter / X">
-          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
-        <a href="https://www.facebook.com/share/181ShVqU9U/" target="_blank" rel="noopener" title="Facebook">
-          <svg viewBox="0 0 24 24"><path d="M17 2h-3a5 5 0 0 0-5 5v3H6v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-        <a href="404.html" target="_blank" rel="noopener" title="LinkedIn">
-          <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.881 3.87 6 2.5 6S.02 4.881.02 3.5C.02 2.12 1.13 1 2.5 1s2.48 1.12 2.48 2.5zM5 8H0v16h5V8zm7.982 0H8.014v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0V24H24V13.869c0-7.88-8.922-7.593-11.018-3.714V8z"/></svg>
-        </a>
-        <a id="emailLink" href="#" title="Email" onclick="window.location.href='mai'+'lto:'+'expensiveblood2007'+'@'+'gmail.com'; return false;">
-          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        </a>
-        <a href="https://music.apple.com/in/playlist/play-infinity/pl.u-EdAVkGeIDYA7JLK" target="_blank" rel="noopener" title="Playlist">
-          <svg viewBox="0 0 24 24"><path d="M9 3v10.55A4 4 0 1 0 11 17V7h4V3H9z"/></svg>
-        </a>
-      </div>
+<img class="bg" src="images/chidu.jpg" alt="Chidu" loading="eager">
+<div class="grain"></div>
+<div class="overlay"></div>
+
+<div class="content">
+
+  <!-- TOP: name + socials -->
+  <div class="top">
+    <h1 class="name">
+      <span class="letter" style="--i:0">C</span>
+      <span class="letter" style="--i:1">H</span>
+      <span class="letter" style="--i:2">I</span>
+      <span class="letter" style="--i:3">D</span>
+      <span class="letter" style="--i:4">U</span>
+    </h1>
+    <div class="socials">
+      <a href="https://instagram.com/chiiiduu" target="_blank" rel="noopener" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://x.com/chiiiduu" target="_blank" rel="noopener" title="Twitter / X">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/181ShVqU9U/" target="_blank" rel="noopener" title="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M17 2h-3a5 5 0 0 0-5 5v3H6v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a id="emailLink" href="#" title="Email">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+      <a href="https://music.apple.com/in/playlist/play-infinity/pl.u-EdAVkGeIDYA7JLK" target="_blank" rel="noopener" title="Playlist">
+        <svg viewBox="0 0 24 24"><path d="M9 3v10.55A4 4 0 1 0 11 17V7h4V3H9z"/></svg>
+      </a>
     </div>
   </div>
+
+  <!-- BOTTOM: nav links -->
+  <nav class="bottom">
+    <a href="about.html">About</a>
+    <a href="updates.html">Updates</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
 </div>
-
-
-
-
-
-<!-- Nav Links -->
-<nav class="nav-links">
-  <a href="about.html">About</a>
-  <a href="updates.html">Updates</a>
-  <a href="contact.html">Contact</a>
-</nav>
-
-
 
 <script>
 (function() {
-
-  /* ── EMAIL ── */
-  var eAddr = 'expensiveblood2007' + '@' + 'gmail.com';
   var eLink = document.getElementById('emailLink');
-  if (eLink) { eLink.href = 'mailto:' + eAddr; eLink.onclick = null; }
+  if (eLink) eLink.href = 'mailto:chiiiduu9@gmail.com';
 
-  /* ── BG UNBLUR ── */
   var bg = document.querySelector('.bg');
   function startBgAnim() {
     requestAnimationFrame(function() {
@@ -286,12 +213,10 @@ width:94vw; }  line-height:1.68; }
     bg.addEventListener('error', function() { bg.style.filter='brightness(0.5)'; bg.style.transform='scale(1)'; });
   }
 
-  /* ── PAUSE GRAIN ON HIDDEN TAB ── */
   document.addEventListener('visibilitychange', function() {
     var grain = document.querySelector('.grain');
     if (grain) grain.style.animationPlayState = document.hidden ? 'paused' : 'running';
   });
-
 })();
 </script>
 
